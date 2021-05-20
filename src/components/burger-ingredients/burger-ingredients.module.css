@@ -1,0 +1,16 @@
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  composes: price;
+  flex-direction: column;
+  max-width: 272px;
+}
+
+.image {
+  max-width: 240px;
+  width: 100%;
+}
