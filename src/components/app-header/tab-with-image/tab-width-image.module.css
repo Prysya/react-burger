@@ -1,0 +1,11 @@
+.link {
+  text-decoration: none;
+}
+
+.active {
+  color: var(--text-primary-color)
+}
+
+.container {
+  display: flex;
+}
