@@ -1,0 +1,15 @@
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.container div {
+  width: 100%;
+}
+
+.dragItem {
+  position: absolute;
+  left: 0;
+  cursor: ns-resize;
+}

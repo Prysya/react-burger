@@ -1,0 +1,24 @@
+.burgerItemsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}
+
+.section {
+  width: 100%;
+  max-width: 600px;
+  height: calc(
+    100% - calc((var(--offset-base-size) * 35))
+  );
+
+  composes: burgerItemsContainer;
+}
+
+.footer {
+  display: flex;
+  justify-content: right;
+  gap: calc(var(--offset-base-size) * 10);
+  align-items: center;
+}
+
+
