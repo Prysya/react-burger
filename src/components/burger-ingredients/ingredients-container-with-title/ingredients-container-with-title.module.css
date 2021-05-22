@@ -1,0 +1,10 @@
+.ingredientsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: calc(var(--offset-base-size) * 10);
+  grid-column-gap: calc(var(--offset-base-size) * 6);
+}
+
+.ingredientsContainer:last-of-type {
+  margin-bottom: 0;
+}

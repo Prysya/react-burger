@@ -1,16 +1,8 @@
-.price {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.card {
-  composes: price;
-  flex-direction: column;
-  max-width: 272px;
-}
-
-.image {
-  max-width: 240px;
+.section {
   width: 100%;
+  max-width: 600px;
+  height: calc(100% - calc(var(--offset-base-size) * 20));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
