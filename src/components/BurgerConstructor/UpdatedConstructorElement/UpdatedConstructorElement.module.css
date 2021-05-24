@@ -8,6 +8,10 @@
   width: 100%;
 }
 
+.container div span:nth-child(3){
+  margin-left: auto;
+}
+
 .dragItem {
   position: absolute;
   left: 0;
