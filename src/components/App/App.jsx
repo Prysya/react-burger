@@ -16,7 +16,7 @@ const App = () => {
     const { price } = selectedBun;
 
     setFullPrice(
-      selectedItems.reduce((acc, { price }) => acc + price, 0) + price
+      selectedItems.reduce((acc, { price }) => acc + price, 0) + (price * 2)
     );
   }, [selectedBun, selectedItems]);
 
