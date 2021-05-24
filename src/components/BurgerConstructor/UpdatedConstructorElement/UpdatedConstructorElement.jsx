@@ -6,9 +6,11 @@ import styles from './UpdatedConstructorElement.module.css'
 
 const MemoDragItem = memo(DragIcon);
 
-const UpdatedConstructorElement = ({type, isLocked, name, price, image}) => {
+const UpdatedConstructorElement = ({type, isLocked, name, price, image, nodeType = 'div'}) => {
+  const NodeType = nodeType;
+
   return (
-    <div className={`${styles.container} pl-8`}>
+    <NodeType className={`${styles.container} pl-8`}>
       {!isLocked && <span className={styles.dragItem}><MemoDragItem type="primary"/></span>}
       <ConstructorElement
         type={type}
@@ -17,7 +19,7 @@ const UpdatedConstructorElement = ({type, isLocked, name, price, image}) => {
         price={price}
         thumbnail={image}
       />
-    </div>
+    </NodeType>
   );
 }
 
@@ -27,6 +29,7 @@ UpdatedConstructorElement.propTypes = {
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
+  nodeType: PropTypes.string,
 }
 
 

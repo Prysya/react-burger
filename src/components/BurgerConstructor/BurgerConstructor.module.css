@@ -1,7 +1,10 @@
 .burgerItemsContainer {
   display: flex;
   flex-direction: column;
-  gap: 10px
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
 }
 
 .section {
@@ -11,7 +14,9 @@
     100% - calc((var(--offset-base-size) * 35))
   );
 
-  composes: burgerItemsContainer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .footer {

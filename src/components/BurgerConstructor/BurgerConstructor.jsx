@@ -23,16 +23,17 @@ const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice }) => {
         price={selectedBun.price}
       />
       <ScrollableContainer>
-        <div className={styles.burgerItemsContainer}>
+        <ul className={styles.burgerItemsContainer}>
           {selectedItems.map(({ name, price, image, _id, queryCount }) => (
             <UpdatedConstructorElement
               name={name}
               price={price}
               image={image}
+              nodeType='li'
               key={_id + queryCount}
             />
           ))}
-        </div>
+        </ul>
       </ScrollableContainer>
       <UpdatedConstructorElement
         type="bottom"
