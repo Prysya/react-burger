@@ -9,11 +9,12 @@ import PropTypes from "prop-types";
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoCounter = memo(Counter);
 
-const IngredientCard = ({ count, addItem, item }) => {
+const IngredientCard = ({ count, addItem, item, openIngredientDetailsModal }) => {
   const { name, image, price } = item;
 
   const handleOnClick = () => {
     addItem(item);
+    openIngredientDetailsModal(item);
   };
 
   return (
@@ -38,6 +39,7 @@ IngredientCard.propTypes = {
     image: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
   }),
+  openIngredientDetailsModal: PropTypes.func.isRequired,
 };
 
 export default memo(IngredientCard);

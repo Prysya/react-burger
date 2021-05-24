@@ -1,6 +1,5 @@
-import React, {memo, useMemo, useState} from "react";
+import React, { memo, useMemo, useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import data from "../../utils/data";
 import styles from "./BurgerIngredients.module.css";
 
 import { IngredientsContainerWithTitle, IngredientCard } from "./";
@@ -14,15 +13,20 @@ const BurgerIngredients = ({
   selectedBun,
   selectedItemsCount,
   addItem,
+  data,
+  openIngredientDetailsModal,
 }) => {
   const [current, setCurrent] = useState("one");
 
-  const buns = useMemo(() => data.filter((item) => item.type === "bun"), []);
-  const sauces = useMemo(
-    () => data.filter((item) => item.type === "sauce"),
-    []
-  );
-  const main = useMemo(() => data.filter((item) => item.type === "main"), []);
+  const buns = useMemo(() => data.filter((item) => item.type === "bun"), [
+    data,
+  ]);
+  const sauces = useMemo(() => data.filter((item) => item.type === "sauce"), [
+    data,
+  ]);
+  const main = useMemo(() => data.filter((item) => item.type === "main"), [
+    data,
+  ]);
 
   return (
     <section className={`${styles.section} pt-10 pb-10`}>
@@ -46,14 +50,16 @@ const BurgerIngredients = ({
       <ScrollableContainer>
         <IngredientsContainerWithTitle title="Булки">
           {buns.map((item) => {
-            return(
-            <IngredientCard
-              addItem={selectBun}
-              count={selectedBun.name === item.name ? 1 : 0}
-              item={item}
-              key={item._id}
-            />
-          )})}
+            return (
+              <IngredientCard
+                addItem={selectBun}
+                count={selectedBun.name === item.name ? 1 : 0}
+                item={item}
+                key={item._id}
+                openIngredientDetailsModal={openIngredientDetailsModal}
+              />
+            );
+          })}
         </IngredientsContainerWithTitle>
         <IngredientsContainerWithTitle title="Соусы">
           {sauces.map((item) => (
@@ -62,6 +68,7 @@ const BurgerIngredients = ({
               count={selectedItemsCount[item.name] || 0}
               item={item}
               key={item._id}
+              openIngredientDetailsModal={openIngredientDetailsModal}
             />
           ))}
         </IngredientsContainerWithTitle>
@@ -72,6 +79,7 @@ const BurgerIngredients = ({
               count={selectedItemsCount[item.name] || 0}
               item={item}
               key={item._id}
+              openIngredientDetailsModal={openIngredientDetailsModal}
             />
           ))}
         </IngredientsContainerWithTitle>
@@ -85,6 +93,8 @@ BurgerIngredients.propTypes = {
   selectedBun: PropTypes.object.isRequired,
   selectedItemsCount: PropTypes.object.isRequired,
   addItem: PropTypes.func.isRequired,
+  data: PropTypes.array.isRequired,
+  openIngredientDetailsModal: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;
