@@ -1,0 +1,8 @@
+.section {
+  width: 100%;
+  max-width: 600px;
+  height: calc(100% - calc(var(--offset-base-size) * 20));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

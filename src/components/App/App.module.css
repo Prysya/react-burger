@@ -1,0 +1,12 @@
+.app {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main {
+  display: flex;
+  gap: calc((var(--offset-base-size) * 10));
+  justify-content: center;
+  height: calc(100vh - 96px);
+  margin: 0 auto;
+}

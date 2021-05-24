@@ -1,0 +1,17 @@
+.header {
+  background-color: var(--background);
+}
+
+.nav {
+  max-width: calc(1920px - (320px * 2));
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.leftTabsContainer {
+  display: flex;
+}

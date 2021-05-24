@@ -1,0 +1,22 @@
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  composes: price;
+  flex-direction: column;
+  max-width: 272px;
+  cursor: pointer;
+  position: relative;
+}
+
+.image {
+  max-width: 240px;
+  width: 100%;
+}
+
+.name {
+  text-align: center;
+}
