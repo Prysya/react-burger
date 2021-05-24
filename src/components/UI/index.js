@@ -1,3 +1,3 @@
-import ScrollableContainer from './scrollable-container/scrollable-container'
+import ScrollableContainer from './ScrollableContainer/ScrollableContainer'
 
 export {ScrollableContainer}

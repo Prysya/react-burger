@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import styles from "./ingredients-container-with-title.module.css";
+import styles from "./IngredientsContainerWithTitle.module.css";
 import PropTypes from "prop-types";
 
 const IngredientsContainerWithTitle = ({ children, title }) => (

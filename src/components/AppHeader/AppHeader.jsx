@@ -5,7 +5,7 @@ import {
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./app-header.module.css";
+import styles from "./AppHeader.module.css";
 import { TabWithImage } from "./";
 
 const AppHeader = () => {

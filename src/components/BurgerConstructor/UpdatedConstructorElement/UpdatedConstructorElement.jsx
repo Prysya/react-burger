@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
-import styles from './updated-constructor-element.module.css'
+import styles from './UpdatedConstructorElement.module.css'
 
 const MemoDragItem = memo(DragIcon);
 

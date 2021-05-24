@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import AppHeader from "../AppHeader/AppHeader";
+import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import styles from "./App.module.css";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
+import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import { BrowserRouter } from "react-router-dom";
 
 const App = () => {

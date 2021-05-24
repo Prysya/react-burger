@@ -3,7 +3,7 @@ import { ScrollableContainer } from "../UI";
 import { UpdatedConstructorElement } from "./";
 import PropTypes from "prop-types";
 
-import styles from "./burger-constructor.module.css";
+import styles from "./BurgerConstructor.module.css";
 import {
   Button,
   CurrencyIcon,

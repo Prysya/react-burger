@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "./scrollable-container.module.css"
+import styles from "./ScrollableContainer.module.css"
 import PropTypes from "prop-types";
 
 const ScrollableContainer = ({children}) => {

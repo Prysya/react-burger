@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { NavLink } from "react-router-dom";
-import styles from "./tab-width-image.module.css";
+import styles from "./TabWithImage.module.css";
 import PropTypes from "prop-types";
 
 const TabWithImage = ({ IconComponent, text, isActive }) => (

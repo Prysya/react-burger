@@ -1,7 +1,7 @@
 import React, {memo, useMemo, useState} from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import data from "../../utils/data";
-import styles from "./burger-ingredients.module.css";
+import styles from "./BurgerIngredients.module.css";
 
 import { IngredientsContainerWithTitle, IngredientCard } from "./";
 import { ScrollableContainer } from "../UI";
