@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const IngredientsContainerWithTitle = ({ children, title }) => (
   <>
     <p className="text text_type_main-medium mb-6">{title}</p>
-    <div className={`${styles.ingredientsContainer} mb-10`}>{children}</div>
+    <ul className={`${styles.ingredientsContainer} mb-10`}>{children}</ul>
   </>
 );
 

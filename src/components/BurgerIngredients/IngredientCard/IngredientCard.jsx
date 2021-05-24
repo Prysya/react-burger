@@ -17,7 +17,7 @@ const IngredientCard = ({ count, addItem, item }) => {
   };
 
   return (
-    <div className={styles.card} onClick={handleOnClick}>
+    <li className={styles.card} onClick={handleOnClick}>
       {count > 0 && <MemoCounter count={count} size="default" />}
       <img className={`${styles.image} mb-1`} src={image} alt={name} />
       <div className={`${styles.price} mb-1`}>
@@ -26,7 +26,7 @@ const IngredientCard = ({ count, addItem, item }) => {
       </div>
 
       <p className={`${styles.name} text text_type_main-default`}>{name}</p>
-    </div>
+    </li>
   );
 };
 
