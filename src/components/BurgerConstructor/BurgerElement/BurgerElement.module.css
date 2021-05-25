@@ -8,7 +8,7 @@
   width: 100%;
 }
 
-.container div span:nth-child(3){
+.container :global(.constructor-element__price) {
   margin-left: auto;
 }
 
