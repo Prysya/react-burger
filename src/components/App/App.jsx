@@ -17,7 +17,7 @@ const App = () => {
   const [selectedItemsCount, setSelectedItemsCount] = useState({});
   const [queryCount, setQueryCount] = useState(0);
   const [data, setData] = useState([]);
-  const [isLoad, setIsLoad] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentIngredient, setCurrentIngredient] = useState({});
   const [orderNumber, setOrderNumber] = useState(1);
   const [
@@ -37,9 +37,11 @@ const App = () => {
       })
       .then(({ data }) => {
         setData(data);
-        setIsLoad(true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(true);
+      });
   }, []);
 
   useEffect(() => {
@@ -94,7 +96,7 @@ const App = () => {
         <AppHeader />
 
         <main className={styles.main}>
-          {isLoad ? (
+          {isLoading ? (
             <BurgerIngredients
               addItem={addItem}
               openIngredientDetailsModal={openIngredientDetailsModal}
