@@ -28,7 +28,13 @@ const App = () => {
 
   useEffect(() => {
     fetch(API_URL)
-      .then((data) => data.json())
+      .then((res) => {
+        if (res.ok) {
+          return data.json();
+        }
+
+        return Promise.reject(`Ошибка: ${res.status}`)
+      })
       .then(({ data }) => {
         setData(data);
         setIsLoad(true);
