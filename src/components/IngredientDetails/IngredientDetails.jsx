@@ -45,7 +45,7 @@ const IngredientDetails = ({
             unit={unit}
             name={name}
             value={value}
-            key={unit + name + value}
+            key={name}
           />
         ))}
       </ul>
