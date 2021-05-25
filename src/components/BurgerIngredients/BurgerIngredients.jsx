@@ -31,7 +31,7 @@ const BurgerIngredients = ({
   return (
     <section className={`${styles.section} pt-10 pb-10`}>
       <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
-      <div style={{ display: "flex" }} className="mb-10">
+      <div style={{ display: "flex" }}>
         <MemoTab value="one" active={current === "one"} onClick={setCurrent}>
           Булки
         </MemoTab>
@@ -47,7 +47,7 @@ const BurgerIngredients = ({
         </MemoTab>
       </div>
 
-      <ScrollableContainer>
+      <ScrollableContainer className='pt-10'>
         <IngredientsContainerWithTitle title="Булки">
           {buns.map((item) => {
             return (
