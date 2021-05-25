@@ -8,7 +8,7 @@ import { API_URL } from "../../constants";
 import { Modal } from "../Modal";
 import { OrderDetails } from "../OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import {Loader} from "../Loader";
+import { Loader } from "../Loader";
 
 const App = () => {
   const [fullPrice, setFullPrice] = useState(0);
@@ -33,7 +33,7 @@ const App = () => {
           return data.json();
         }
 
-        return Promise.reject(`Ошибка: ${res.status}`)
+        return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then(({ data }) => {
         setData(data);
@@ -45,10 +45,9 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const { price } = selectedBun;
-
     setFullPrice(
-      selectedItems.reduce((acc, { price }) => acc + price, 0) + price * 2
+      selectedItems.reduce((acc, item) => acc + item.price, 0) +
+        selectedBun.price * 2
     );
   }, [selectedBun, selectedItems]);
 
@@ -105,7 +104,9 @@ const App = () => {
               selectedItemsCount={selectedItemsCount}
               data={data}
             />
-          ): <Loader />}
+          ) : (
+            <Loader />
+          )}
           {Object.keys(selectedBun).length !== 0 && (
             <BurgerConstructor
               selectedItems={selectedItems}
