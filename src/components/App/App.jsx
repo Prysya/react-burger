@@ -36,7 +36,9 @@ const App = () => {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then(({ data }) => {
-        setData(data);
+        if (data) {
+          setData(data);
+        }
       })
       .catch((err) => console.error(err))
       .finally(() => {
