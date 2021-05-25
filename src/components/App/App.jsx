@@ -36,9 +36,11 @@ const App = () => {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then(({ data }) => {
-        if (data) {
-          setData(data);
+        if (data && Array.isArray(data)) {
+          return setData(data);
         }
+
+        return Promise.reject(`Ошибка: data отстуствует или не является массивом`);
       })
       .catch((err) => console.error(err))
       .finally(() => {
