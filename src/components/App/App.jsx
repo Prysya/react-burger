@@ -30,7 +30,7 @@ const App = () => {
     fetch(API_URL)
       .then((res) => {
         if (res.ok) {
-          return data.json();
+          return res.json();
         }
 
         return Promise.reject(`Ошибка: ${res.status}`);
