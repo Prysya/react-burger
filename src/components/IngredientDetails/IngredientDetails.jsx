@@ -2,21 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import styles from "./IngredientDetails.module.css";
-
-const Nutrient = ({name, unit, value}) => {
-  return (
-    <li className={styles.nutrient}>
-      <p className="text text_type_main-default text_color_inactive mb-3">{`${name}, ${unit}`}</p>
-      <p className="text text_type_digits-default text_color_inactive">{value}</p>
-    </li>
-  );
-}
-
-Nutrient.propTypes = {
-  name: PropTypes.string.isRequired,
-  unit: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-}
+import { Nutrient } from "./";
 
 const IngredientDetails = ({
   currentIngredient: {
@@ -38,15 +24,12 @@ const IngredientDetails = ({
   return (
     <>
       <img className="mb-4" src={image_large} alt={name} />
-      <h3 className={`${styles.name} text text_type_main-medium mb-8`}>{name}</h3>
+      <h3 className={`${styles.name} text text_type_main-medium mb-8`}>
+        {name}
+      </h3>
       <ul className={styles.nutrientsContainer}>
         {nutrients.map(({ value, name, unit }) => (
-          <Nutrient
-            unit={unit}
-            name={name}
-            value={value}
-            key={name}
-          />
+          <Nutrient unit={unit} name={name} value={value} key={name} />
         ))}
       </ul>
     </>
