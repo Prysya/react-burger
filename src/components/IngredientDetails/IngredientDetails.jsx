@@ -15,10 +15,10 @@ const IngredientDetails = ({
   },
 }) => {
   const nutrients = [
-    { value: calories, name: "Калории", unit: "ккал" },
-    { value: proteins, name: "Белки", unit: "г" },
-    { value: fat, name: "Жиры", unit: "г" },
-    { value: carbohydrates, name: "Углеводы", unit: "г" },
+    { value: calories || 0, name: "Калории", unit: "ккал" },
+    { value: proteins || 0, name: "Белки", unit: "г" },
+    { value: fat || 0, name: "Жиры", unit: "г" },
+    { value: carbohydrates || 0, name: "Углеводы", unit: "г" },
   ];
 
   return (
