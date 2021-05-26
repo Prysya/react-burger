@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import styles from "./App.module.css";
@@ -60,43 +60,40 @@ const App = () => {
     );
   }, [selectedBun, selectedItems]);
 
-  const handleBunSelection = useCallback((obj) => {
+  const handleBunSelection = (obj) => {
     setSelectedBun(obj);
-  }, []);
+  };
 
-  const handleItemAddition = useCallback(
-    (item) => {
-      setSelectedItemsCount((prev) => ({
-        ...prev,
-        [item.name]: (prev[item.name] || 0) + 1,
-      }));
-      setSelectedItems((prev) => [...prev, { ...item, queryCount }]);
-      setQueryCount((prev) => prev + 1);
-    },
-    [queryCount]
-  );
+  const handleItemAddition = (item) => {
+    setSelectedItemsCount((prev) => ({
+      ...prev,
+      [item.name]: (prev[item.name] || 0) + 1,
+    }));
+    setSelectedItems((prev) => [...prev, { ...item, queryCount }]);
+    setQueryCount((prev) => prev + 1);
+  };
 
-  const handleOpenIngredientDetailsModal = useCallback((current) => {
+  const handleOpenIngredientDetailsModal = (current) => {
     setCurrentIngredient(current);
     setIsIngredientDetailsModalIsOpen(true);
-  }, []);
+  };
 
-  const handleCloseIngredientDetailsModal = useCallback(() => {
+  const handleCloseIngredientDetailsModal = () => {
     setIsIngredientDetailsModalIsOpen(false);
-  }, []);
+  };
 
-  const handleOpenOrderDetailsModal = useCallback(() => {
+  const handleOpenOrderDetailsModal = () => {
     setOrderNumber((prev) => prev + 1);
     setIsOrderDetailsModalIsOpen(true);
     setSelectedBun({});
     setSelectedItems([]);
     setSelectedItemsCount({});
     setQueryCount(0);
-  }, []);
+  };
 
-  const handleCloseOrderDetailsModal = useCallback(() => {
+  const handleCloseOrderDetailsModal = () => {
     setIsOrderDetailsModalIsOpen(false);
-  }, []);
+  };
 
   return (
     <div className={styles.app}>
