@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { ScrollableContainer } from "../UI";
-import { UpdatedConstructorElement } from "./";
+import { BurgerElement } from "./";
 import PropTypes from "prop-types";
 
 import styles from "./BurgerConstructor.module.css";
@@ -15,7 +15,7 @@ const MemoButton = memo(Button)
 const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice, handleOpenOrderDetailsModal }) => {
   return (
     <section className={`${styles.section} pt-25 pb-10`}>
-      <UpdatedConstructorElement
+      <BurgerElement
         type="top"
         isLocked={true}
         image={selectedBun.image}
@@ -25,7 +25,7 @@ const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice, handleOpenOr
       <ScrollableContainer>
         <ul className={styles.burgerItemsContainer}>
           {selectedItems.map(({ name, price, image, _id, queryCount }) => (
-            <UpdatedConstructorElement
+            <BurgerElement
               name={name}
               price={price}
               image={image}
@@ -35,7 +35,7 @@ const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice, handleOpenOr
           ))}
         </ul>
       </ScrollableContainer>
-      <UpdatedConstructorElement
+      <BurgerElement
         type="bottom"
         isLocked={true}
         image={selectedBun.image}
