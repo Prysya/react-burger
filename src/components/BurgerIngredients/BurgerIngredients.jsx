@@ -32,15 +32,15 @@ const BurgerIngredients = ({
     <section className={`${styles.section} pt-10 pb-10`}>
       <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
       <div style={{ display: "flex" }}>
-        <MemoTab value="one" active={current === "one"} onClick={setCurrent}>
+        <MemoTab value="buns" active={current === "buns"} onClick={setCurrent}>
           Булки
         </MemoTab>
-        <MemoTab value="two" active={current === "two"} onClick={setCurrent}>
+        <MemoTab value="sauces" active={current === "sauces"} onClick={setCurrent}>
           Соусы
         </MemoTab>
         <MemoTab
-          value="three"
-          active={current === "three"}
+          value="toppings"
+          active={current === "toppings"}
           onClick={setCurrent}
         >
           Начинки
