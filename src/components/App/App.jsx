@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import AppHeader from "../AppHeader/AppHeader";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import styles from "./App.module.css";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import { AppHeader } from "../AppHeader";
+import { BurgerConstructor } from "../BurgerConstructor";
+import { BurgerIngredients } from "../BurgerIngredients";
 import { API_URL } from "../../constants";
 import { Modal } from "../Modal";
 import { OrderDetails } from "../OrderDetails";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import { IngredientDetails } from "../IngredientDetails";
 import { Loader } from "../Loader";
 
 const App = () => {
