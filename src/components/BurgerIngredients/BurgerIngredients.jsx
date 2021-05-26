@@ -9,12 +9,12 @@ import PropTypes from "prop-types";
 const MemoTab = memo(Tab);
 
 const BurgerIngredients = ({
-  selectBun,
+  handleBunSelection,
   selectedBun,
   selectedItemsCount,
-  addItem,
+  handleItemAddition,
   data,
-  openIngredientDetailsModal,
+  handleOpenIngredientDetailsModal,
 }) => {
   const [current, setCurrent] = useState("one");
 
@@ -52,11 +52,11 @@ const BurgerIngredients = ({
           {buns.map((item) => {
             return (
               <IngredientCard
-                addItem={selectBun}
+                handleItemAddition={handleBunSelection}
                 count={selectedBun.name === item.name ? 1 : 0}
                 item={item}
                 key={item._id}
-                openIngredientDetailsModal={openIngredientDetailsModal}
+                handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
               />
             );
           })}
@@ -64,22 +64,22 @@ const BurgerIngredients = ({
         <IngredientsContainerWithTitle title="Соусы">
           {sauces.map((item) => (
             <IngredientCard
-              addItem={addItem}
+              handleItemAddition={handleItemAddition}
               count={selectedItemsCount[item.name] || 0}
               item={item}
               key={item._id}
-              openIngredientDetailsModal={openIngredientDetailsModal}
+              handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
             />
           ))}
         </IngredientsContainerWithTitle>
         <IngredientsContainerWithTitle title="Начинки">
           {main.map((item) => (
             <IngredientCard
-              addItem={addItem}
+              handleItemAddition={handleItemAddition}
               count={selectedItemsCount[item.name] || 0}
               item={item}
               key={item._id}
-              openIngredientDetailsModal={openIngredientDetailsModal}
+              handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
             />
           ))}
         </IngredientsContainerWithTitle>
@@ -89,12 +89,12 @@ const BurgerIngredients = ({
 };
 
 BurgerIngredients.propTypes = {
-  selectBun: PropTypes.func.isRequired,
+  handleBunSelection: PropTypes.func.isRequired,
   selectedBun: PropTypes.object.isRequired,
   selectedItemsCount: PropTypes.object.isRequired,
-  addItem: PropTypes.func.isRequired,
+  handleItemAddition: PropTypes.func.isRequired,
   data: PropTypes.array.isRequired,
-  openIngredientDetailsModal: PropTypes.func.isRequired,
+  handleOpenIngredientDetailsModal: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

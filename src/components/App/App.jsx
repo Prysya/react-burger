@@ -3,7 +3,6 @@ import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import styles from "./App.module.css";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import { BrowserRouter } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { Modal } from "../Modal";
 import { OrderDetails } from "../OrderDetails";
@@ -21,12 +20,16 @@ const App = () => {
   const [currentIngredient, setCurrentIngredient] = useState({});
   const [orderNumber, setOrderNumber] = useState(1);
   const [
-    ingredientDetailsModalIsOpen,
-    setIngredientDetailsModalIsOpen,
+    isIngredientDetailsModalIsOpen,
+    setIsIngredientDetailsModalIsOpen,
   ] = useState(false);
-  const [orderDetailsModalIsOpen, setOrderDetailsModalIsOpen] = useState(false);
+  const [isOrderDetailsModalIsOpen, setIsOrderDetailsModalIsOpen] = useState(
+    false
+  );
 
   useEffect(() => {
+    setIsLoading(true);
+
     fetch(API_URL)
       .then((res) => {
         if (res.ok) {
@@ -40,11 +43,13 @@ const App = () => {
           return setData(data);
         }
 
-        return Promise.reject(`Ошибка: data отстуствует или не является массивом`);
+        return Promise.reject(
+          `Ошибка: data отстуствует или не является массивом`
+        );
       })
       .catch((err) => console.error(err))
       .finally(() => {
-        setIsLoading(true);
+        setIsLoading(false);
       });
   }, []);
 
@@ -55,11 +60,11 @@ const App = () => {
     );
   }, [selectedBun, selectedItems]);
 
-  const selectBun = useCallback((obj) => {
+  const handleBunSelection = useCallback((obj) => {
     setSelectedBun(obj);
   }, []);
 
-  const addItem = useCallback(
+  const handleItemAddition = useCallback(
     (item) => {
       setSelectedItemsCount((prev) => ({
         ...prev,
@@ -71,72 +76,70 @@ const App = () => {
     [queryCount]
   );
 
-  const openIngredientDetailsModal = useCallback((current) => {
+  const handleOpenIngredientDetailsModal = useCallback((current) => {
     setCurrentIngredient(current);
-    setIngredientDetailsModalIsOpen(true);
+    setIsIngredientDetailsModalIsOpen(true);
   }, []);
 
-  const closeIngredientDetailsModal = useCallback(() => {
-    setIngredientDetailsModalIsOpen(false);
+  const handleCloseIngredientDetailsModal = useCallback(() => {
+    setIsIngredientDetailsModalIsOpen(false);
   }, []);
 
-  const openOrderDetailsModal = useCallback(() => {
+  const handleOpenOrderDetailsModal = useCallback(() => {
     setOrderNumber((prev) => prev + 1);
-    setOrderDetailsModalIsOpen(true);
+    setIsOrderDetailsModalIsOpen(true);
     setSelectedBun({});
     setSelectedItems([]);
     setSelectedItemsCount({});
     setQueryCount(0);
   }, []);
 
-  const closeOrderDetailsModal = useCallback(() => {
-    setOrderDetailsModalIsOpen(false);
+  const handleCloseOrderDetailsModal = useCallback(() => {
+    setIsOrderDetailsModalIsOpen(false);
   }, []);
 
   return (
-    <BrowserRouter>
-      <div className={styles.app}>
-        <AppHeader />
+    <div className={styles.app}>
+      <AppHeader />
 
-        <main className={styles.main}>
-          {isLoading ? (
-            <BurgerIngredients
-              addItem={addItem}
-              openIngredientDetailsModal={openIngredientDetailsModal}
-              selectedBun={selectedBun}
-              selectBun={selectBun}
-              selectedItemsCount={selectedItemsCount}
-              data={data}
-            />
-          ) : (
-            <Loader />
-          )}
-          {Object.keys(selectedBun).length !== 0 && (
-            <BurgerConstructor
-              selectedItems={selectedItems}
-              selectedBun={selectedBun}
-              fullPrice={fullPrice}
-              openOrderDetailsModal={openOrderDetailsModal}
-            />
-          )}
+      <main className={styles.main}>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <BurgerIngredients
+            handleItemAddition={handleItemAddition}
+            handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
+            selectedBun={selectedBun}
+            handleBunSelection={handleBunSelection}
+            selectedItemsCount={selectedItemsCount}
+            data={data}
+          />
+        )}
+        {Object.keys(selectedBun).length !== 0 && (
+          <BurgerConstructor
+            selectedItems={selectedItems}
+            selectedBun={selectedBun}
+            fullPrice={fullPrice}
+            handleOpenOrderDetailsModal={handleOpenOrderDetailsModal}
+          />
+        )}
 
-          {orderDetailsModalIsOpen && (
-            <Modal onClose={closeOrderDetailsModal}>
-              <OrderDetails orderNumber={orderNumber} />
-            </Modal>
-          )}
+        {isOrderDetailsModalIsOpen && (
+          <Modal onClose={handleCloseOrderDetailsModal}>
+            <OrderDetails orderNumber={orderNumber} />
+          </Modal>
+        )}
 
-          {ingredientDetailsModalIsOpen && (
-            <Modal
-              onClose={closeIngredientDetailsModal}
-              header="Детали ингридиента"
-            >
-              <IngredientDetails currentIngredient={currentIngredient} />
-            </Modal>
-          )}
-        </main>
-      </div>
-    </BrowserRouter>
+        {isIngredientDetailsModalIsOpen && (
+          <Modal
+            onClose={handleCloseIngredientDetailsModal}
+            header="Детали ингридиента"
+          >
+            <IngredientDetails currentIngredient={currentIngredient} />
+          </Modal>
+        )}
+      </main>
+    </div>
   );
 };
 

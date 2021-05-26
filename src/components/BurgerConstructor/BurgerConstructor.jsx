@@ -12,7 +12,7 @@ import {
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoButton = memo(Button)
 
-const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice, openOrderDetailsModal }) => {
+const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice, handleOpenOrderDetailsModal }) => {
   return (
     <section className={`${styles.section} pt-25 pb-10`}>
       <UpdatedConstructorElement
@@ -46,7 +46,7 @@ const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice, openOrderDet
         <span className="text text_type_digits-medium">
           {fullPrice} <MemoCurrencyIcon type="primary"/>
         </span>
-        <MemoButton type="primary" size="medium" onClick={openOrderDetailsModal}>
+        <MemoButton type="primary" size="medium" onClick={handleOpenOrderDetailsModal}>
           Оформить заказ
         </MemoButton>
       </div>
@@ -64,7 +64,7 @@ BurgerConstructor.propTypes = {
   selectedItems: PropTypes.arrayOf(propTypesForObject),
   selectedBun: propTypesForObject,
   fullPrice: PropTypes.number.isRequired,
-  openOrderDetailsModal: PropTypes.func.isRequired,
+  handleOpenOrderDetailsModal: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;
