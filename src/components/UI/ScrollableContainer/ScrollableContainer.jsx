@@ -8,7 +8,7 @@ const ScrollableContainer = ({ children, className, ...props }) => {
 
 ScrollableContainer.propTypes = {
   children: PropTypes.any.isRequired,
-  className: PropTypes.any,
+  className: PropTypes.string,
 };
 
 export default ScrollableContainer;
