@@ -8,6 +8,10 @@
   width: 100%;
 }
 
+.container :global(.constructor-element__price) {
+  margin-left: auto;
+}
+
 .dragItem {
   position: absolute;
   left: 0;

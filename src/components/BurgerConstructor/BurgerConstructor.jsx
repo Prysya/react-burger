@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { ScrollableContainer } from "../UI";
-import { UpdatedConstructorElement } from "./";
+import { BurgerElement } from "./";
 import PropTypes from "prop-types";
 
 import styles from "./BurgerConstructor.module.css";
@@ -12,10 +12,10 @@ import {
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoButton = memo(Button)
 
-const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice }) => {
+const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice, handleOpenOrderDetailsModal }) => {
   return (
     <section className={`${styles.section} pt-25 pb-10`}>
-      <UpdatedConstructorElement
+      <BurgerElement
         type="top"
         isLocked={true}
         image={selectedBun.image}
@@ -25,7 +25,7 @@ const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice }) => {
       <ScrollableContainer>
         <ul className={styles.burgerItemsContainer}>
           {selectedItems.map(({ name, price, image, _id, queryCount }) => (
-            <UpdatedConstructorElement
+            <BurgerElement
               name={name}
               price={price}
               image={image}
@@ -35,7 +35,7 @@ const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice }) => {
           ))}
         </ul>
       </ScrollableContainer>
-      <UpdatedConstructorElement
+      <BurgerElement
         type="bottom"
         isLocked={true}
         image={selectedBun.image}
@@ -46,7 +46,7 @@ const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice }) => {
         <span className="text text_type_digits-medium">
           {fullPrice} <MemoCurrencyIcon type="primary"/>
         </span>
-        <MemoButton type="primary" size="medium">
+        <MemoButton type="primary" size="medium" onClick={handleOpenOrderDetailsModal}>
           Оформить заказ
         </MemoButton>
       </div>
@@ -54,16 +54,17 @@ const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice }) => {
   );
 };
 
-const propTypesForObject = PropTypes.shape({
+const burgerItemPropTypes = PropTypes.shape({
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   queryCount: PropTypes.number,
 });
 
 BurgerConstructor.propTypes = {
-  selectedItems: PropTypes.arrayOf(propTypesForObject),
-  selectedBun: propTypesForObject,
+  selectedItems: PropTypes.arrayOf(burgerItemPropTypes),
+  selectedBun: burgerItemPropTypes,
   fullPrice: PropTypes.number.isRequired,
+  handleOpenOrderDetailsModal: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

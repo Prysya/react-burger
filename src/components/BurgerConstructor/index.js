@@ -1,4 +1,4 @@
 import BurgerConstructor from "./BurgerConstructor";
-import UpdatedConstructorElement from "./UpdatedConstructorElement/UpdatedConstructorElement";
+import BurgerElement from "./BurgerElement/BurgerElement";
 
-export {BurgerConstructor, UpdatedConstructorElement}
+export {BurgerConstructor, BurgerElement}

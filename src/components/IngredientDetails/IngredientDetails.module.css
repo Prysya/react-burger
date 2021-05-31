@@ -1,0 +1,12 @@
+.nutrientsContainer {
+  display: flex;
+  gap: calc(var(--offset-base-size) * 5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.name {
+  text-align: center;
+}
+

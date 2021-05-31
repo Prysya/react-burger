@@ -1,6 +1,5 @@
-import React, {memo, useMemo, useState} from "react";
+import React, { memo, useMemo, useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import data from "../../utils/data";
 import styles from "./BurgerIngredients.module.css";
 
 import { IngredientsContainerWithTitle, IngredientCard } from "./";
@@ -10,68 +9,77 @@ import PropTypes from "prop-types";
 const MemoTab = memo(Tab);
 
 const BurgerIngredients = ({
-  selectBun,
+  handleBunSelection,
   selectedBun,
   selectedItemsCount,
-  addItem,
+  handleItemAddition,
+  data,
+  handleOpenIngredientDetailsModal,
 }) => {
   const [current, setCurrent] = useState("one");
 
-  const buns = useMemo(() => data.filter((item) => item.type === "bun"), []);
-  const sauces = useMemo(
-    () => data.filter((item) => item.type === "sauce"),
-    []
-  );
-  const main = useMemo(() => data.filter((item) => item.type === "main"), []);
+  const buns = useMemo(() => data.filter((item) => item.type === "bun"), [
+    data,
+  ]);
+  const sauces = useMemo(() => data.filter((item) => item.type === "sauce"), [
+    data,
+  ]);
+  const main = useMemo(() => data.filter((item) => item.type === "main"), [
+    data,
+  ]);
 
   return (
     <section className={`${styles.section} pt-10 pb-10`}>
       <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
-      <div style={{ display: "flex" }} className="mb-10">
-        <MemoTab value="one" active={current === "one"} onClick={setCurrent}>
+      <div style={{ display: "flex" }}>
+        <MemoTab value="buns" active={current === "buns"} onClick={setCurrent}>
           Булки
         </MemoTab>
-        <MemoTab value="two" active={current === "two"} onClick={setCurrent}>
+        <MemoTab value="sauces" active={current === "sauces"} onClick={setCurrent}>
           Соусы
         </MemoTab>
         <MemoTab
-          value="three"
-          active={current === "three"}
+          value="toppings"
+          active={current === "toppings"}
           onClick={setCurrent}
         >
           Начинки
         </MemoTab>
       </div>
 
-      <ScrollableContainer>
+      <ScrollableContainer className='pt-10'>
         <IngredientsContainerWithTitle title="Булки">
           {buns.map((item) => {
-            return(
-            <IngredientCard
-              addItem={selectBun}
-              count={selectedBun.name === item.name ? 1 : 0}
-              item={item}
-              key={item._id}
-            />
-          )})}
+            return (
+              <IngredientCard
+                handleItemAddition={handleBunSelection}
+                count={selectedBun._id === item._id ? 1 : 0}
+                item={item}
+                key={item._id}
+                handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
+              />
+            );
+          })}
         </IngredientsContainerWithTitle>
         <IngredientsContainerWithTitle title="Соусы">
           {sauces.map((item) => (
             <IngredientCard
-              addItem={addItem}
+              handleItemAddition={handleItemAddition}
               count={selectedItemsCount[item.name] || 0}
               item={item}
               key={item._id}
+              handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
             />
           ))}
         </IngredientsContainerWithTitle>
         <IngredientsContainerWithTitle title="Начинки">
           {main.map((item) => (
             <IngredientCard
-              addItem={addItem}
+              handleItemAddition={handleItemAddition}
               count={selectedItemsCount[item.name] || 0}
               item={item}
               key={item._id}
+              handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
             />
           ))}
         </IngredientsContainerWithTitle>
@@ -81,10 +89,12 @@ const BurgerIngredients = ({
 };
 
 BurgerIngredients.propTypes = {
-  selectBun: PropTypes.func.isRequired,
+  handleBunSelection: PropTypes.func.isRequired,
   selectedBun: PropTypes.object.isRequired,
   selectedItemsCount: PropTypes.object.isRequired,
-  addItem: PropTypes.func.isRequired,
+  handleItemAddition: PropTypes.func.isRequired,
+  data: PropTypes.array.isRequired,
+  handleOpenIngredientDetailsModal: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;

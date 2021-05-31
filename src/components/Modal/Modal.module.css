@@ -1,0 +1,38 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.modalContainer {
+  z-index: 3;
+
+  width: 100%;
+  max-width: 600px;
+  border-radius: var(--common-border-radius-s);
+  background-color: var(--background);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.closeIcon {
+  cursor: pointer;
+  margin-left: auto;
+}

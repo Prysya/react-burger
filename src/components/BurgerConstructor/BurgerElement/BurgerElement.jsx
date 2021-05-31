@@ -2,11 +2,11 @@ import React, {memo} from 'react';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
-import styles from './UpdatedConstructorElement.module.css'
+import styles from './BurgerElement.module.css'
 
 const MemoDragItem = memo(DragIcon);
 
-const UpdatedConstructorElement = ({type, isLocked, name, price, image, nodeType = 'div'}) => {
+const BurgerElement = ({type, isLocked, name, price, image, nodeType = 'div'}) => {
   const NodeType = nodeType;
 
   return (
@@ -23,7 +23,7 @@ const UpdatedConstructorElement = ({type, isLocked, name, price, image, nodeType
   );
 }
 
-UpdatedConstructorElement.propTypes = {
+BurgerElement.propTypes = {
   type: PropTypes.oneOf(['top', 'bottom']),
   isLocked: PropTypes.bool,
   name: PropTypes.string.isRequired,
@@ -33,4 +33,4 @@ UpdatedConstructorElement.propTypes = {
 }
 
 
-export default memo(UpdatedConstructorElement);
+export default memo(BurgerElement);
