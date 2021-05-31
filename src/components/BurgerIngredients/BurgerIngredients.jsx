@@ -53,7 +53,7 @@ const BurgerIngredients = ({
             return (
               <IngredientCard
                 handleItemAddition={handleBunSelection}
-                count={selectedBun.name === item.name ? 1 : 0}
+                count={selectedBun._id === item._id ? 1 : 0}
                 item={item}
                 key={item._id}
                 handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
