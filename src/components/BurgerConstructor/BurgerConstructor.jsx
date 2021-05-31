@@ -54,15 +54,15 @@ const BurgerConstructor = ({ selectedItems, selectedBun, fullPrice, handleOpenOr
   );
 };
 
-const propTypesForObject = PropTypes.shape({
+const burgerItemPropTypes = PropTypes.shape({
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   queryCount: PropTypes.number,
 });
 
 BurgerConstructor.propTypes = {
-  selectedItems: PropTypes.arrayOf(propTypesForObject),
-  selectedBun: propTypesForObject,
+  selectedItems: PropTypes.arrayOf(burgerItemPropTypes),
+  selectedBun: burgerItemPropTypes,
   fullPrice: PropTypes.number.isRequired,
   handleOpenOrderDetailsModal: PropTypes.func.isRequired,
 };
