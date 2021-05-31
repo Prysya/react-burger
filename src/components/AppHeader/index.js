@@ -1,4 +1,4 @@
-import TabWithImage from './TabWithImage/TabWithImage';
+import NavItem from './NavItem/NavItem';
 import AppHeader from "./AppHeader";
 
-export {TabWithImage, AppHeader}
+export {NavItem, AppHeader}

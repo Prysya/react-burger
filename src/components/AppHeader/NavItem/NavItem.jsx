@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import { NavLink } from "react-router-dom";
-import styles from "./TabWithImage.module.css";
+import styles from "./NavItem.module.css";
 import PropTypes from "prop-types";
 
-const TabWithImage = ({ IconComponent, text, isActive }) => (
+const NavItem = ({ IconComponent, text, isActive }) => (
   <div className={`${styles.container} p-5`}>
     <IconComponent type={isActive ? "primary" : "secondary"} />
     <NavLink
@@ -17,10 +17,10 @@ const TabWithImage = ({ IconComponent, text, isActive }) => (
   </div>
 );
 
-TabWithImage.propTypes = {
+NavItem.propTypes = {
   IconComponent: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
   isDisabled: PropTypes.bool,
 };
 
-export default memo(TabWithImage);
+export default memo(NavItem);

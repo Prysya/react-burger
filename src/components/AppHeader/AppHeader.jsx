@@ -6,22 +6,22 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./AppHeader.module.css";
-import { TabWithImage } from "./";
+import { NavItem } from "./";
 
 const AppHeader = () => {
   return (
     <header className={`${styles.header} p-4`}>
       <nav className={styles.nav}>
         <div className={styles.leftTabsContainer}>
-          <TabWithImage
+          <NavItem
             IconComponent={BurgerIcon}
             text="Конструктор"
             isActive
           />
-          <TabWithImage IconComponent={ListIcon} text="Лента заказов" />
+          <NavItem IconComponent={ListIcon} text="Лента заказов" />
         </div>
         <Logo />
-        <TabWithImage IconComponent={ProfileIcon} text="Личный кабинет" />
+        <NavItem IconComponent={ProfileIcon} text="Личный кабинет" />
       </nav>
     </header>
   );
