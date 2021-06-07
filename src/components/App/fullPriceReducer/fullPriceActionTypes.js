@@ -1,0 +1,6 @@
+const INCREMENT = "INCREMENT";
+const DECREMENT = "DECREMENT";
+const RESET = "RESET";
+const SET = 'SET';
+
+export { INCREMENT, DECREMENT, RESET, SET };
