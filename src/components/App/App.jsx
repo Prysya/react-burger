@@ -66,8 +66,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    console.log(selectedBun, selectedItems);
-
     fullPriceDispatcher(
       setFullPrice(
         selectedItems.reduce((acc, item) => acc + item.price, 0) +
