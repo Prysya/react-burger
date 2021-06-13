@@ -1,22 +1,23 @@
-import React, { memo, useMemo, useState } from "react";
+import React, { memo, useContext, useMemo, useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerIngredients.module.css";
 
 import { IngredientsContainerWithTitle, IngredientCard } from "./";
 import { ScrollableContainer } from "../UI";
 import PropTypes from "prop-types";
+import { BurgerConstructorContext } from "../../context";
 
 const MemoTab = memo(Tab);
 
 const BurgerIngredients = ({
-  handleBunSelection,
-  selectedBun,
   selectedItemsCount,
-  handleItemAddition,
   data,
   handleOpenIngredientDetailsModal,
 }) => {
-  const [current, setCurrent] = useState("one");
+  const [current, setCurrent] = useState("buns");
+  const { handleItemAddition, selectedBun, handleBunSelection } = useContext(
+    BurgerConstructorContext
+  );
 
   const buns = useMemo(() => data.filter((item) => item.type === "bun"), [
     data,
@@ -35,7 +36,11 @@ const BurgerIngredients = ({
         <MemoTab value="buns" active={current === "buns"} onClick={setCurrent}>
           Булки
         </MemoTab>
-        <MemoTab value="sauces" active={current === "sauces"} onClick={setCurrent}>
+        <MemoTab
+          value="sauces"
+          active={current === "sauces"}
+          onClick={setCurrent}
+        >
           Соусы
         </MemoTab>
         <MemoTab
@@ -47,7 +52,7 @@ const BurgerIngredients = ({
         </MemoTab>
       </div>
 
-      <ScrollableContainer className='pt-10'>
+      <ScrollableContainer className="pt-10">
         <IngredientsContainerWithTitle title="Булки">
           {buns.map((item) => {
             return (
@@ -56,7 +61,9 @@ const BurgerIngredients = ({
                 count={selectedBun._id === item._id ? 1 : 0}
                 item={item}
                 key={item._id}
-                handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
+                handleOpenIngredientDetailsModal={
+                  handleOpenIngredientDetailsModal
+                }
               />
             );
           })}
@@ -68,7 +75,9 @@ const BurgerIngredients = ({
               count={selectedItemsCount[item.name] || 0}
               item={item}
               key={item._id}
-              handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
+              handleOpenIngredientDetailsModal={
+                handleOpenIngredientDetailsModal
+              }
             />
           ))}
         </IngredientsContainerWithTitle>
@@ -79,7 +88,9 @@ const BurgerIngredients = ({
               count={selectedItemsCount[item.name] || 0}
               item={item}
               key={item._id}
-              handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
+              handleOpenIngredientDetailsModal={
+                handleOpenIngredientDetailsModal
+              }
             />
           ))}
         </IngredientsContainerWithTitle>
@@ -89,10 +100,8 @@ const BurgerIngredients = ({
 };
 
 BurgerIngredients.propTypes = {
-  handleBunSelection: PropTypes.func.isRequired,
   selectedBun: PropTypes.object.isRequired,
   selectedItemsCount: PropTypes.object.isRequired,
-  handleItemAddition: PropTypes.func.isRequired,
   data: PropTypes.array.isRequired,
   handleOpenIngredientDetailsModal: PropTypes.func.isRequired,
 };

@@ -1,16 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import styles from "./App.module.css";
 import { AppHeader } from "../AppHeader";
 import { BurgerConstructor } from "../BurgerConstructor";
 import { BurgerIngredients } from "../BurgerIngredients";
-import { API_URL } from "../../constants";
+import { INGREDIENTS_API_URL } from "../../constants";
 import { Modal } from "../Modal";
 import { OrderDetails } from "../OrderDetails";
 import { IngredientDetails } from "../IngredientDetails";
 import { Loader } from "../Loader";
+import { BurgerConstructorContext } from "../../context";
+import {
+  fullPriceInitialState,
+  fullPriceReducer,
+  setFullPrice,
+} from "./fullPriceReducer";
+import API_URL from "../../constants/API_URL";
 
 const App = () => {
-  const [fullPrice, setFullPrice] = useState(0);
+  const [fullPrice, fullPriceDispatcher] = useReducer(
+    fullPriceReducer,
+    fullPriceInitialState,
+    undefined
+  );
   const [selectedBun, setSelectedBun] = useState({});
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItemsCount, setSelectedItemsCount] = useState({});
@@ -18,7 +29,7 @@ const App = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentIngredient, setCurrentIngredient] = useState({});
-  const [orderNumber, setOrderNumber] = useState(1);
+  const [orderNumber, setOrderNumber] = useState(null);
   const [
     isIngredientDetailsModalIsOpen,
     setIsIngredientDetailsModalIsOpen,
@@ -26,11 +37,12 @@ const App = () => {
   const [isOrderDetailsModalIsOpen, setIsOrderDetailsModalIsOpen] = useState(
     false
   );
+  const [isOrderButtonDisabled, setIsOrderButtonDisabled] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
 
-    fetch(API_URL)
+    fetch(INGREDIENTS_API_URL.INGREDIENTS)
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -54,9 +66,11 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    setFullPrice(
-      selectedItems.reduce((acc, item) => acc + item.price, 0) +
-        selectedBun.price * 2
+    fullPriceDispatcher(
+      setFullPrice(
+        selectedItems.reduce((acc, item) => acc + item.price, 0) +
+          selectedBun.price * 2
+      )
     );
   }, [selectedBun, selectedItems]);
 
@@ -82,13 +96,43 @@ const App = () => {
     setIsIngredientDetailsModalIsOpen(false);
   };
 
-  const handleOpenOrderDetailsModal = () => {
-    setOrderNumber((prev) => prev + 1);
-    setIsOrderDetailsModalIsOpen(true);
-    setSelectedBun({});
-    setSelectedItems([]);
-    setSelectedItemsCount({});
-    setQueryCount(0);
+  const handleOpenOrderDetailsModal = async () => {
+    try {
+      setIsOrderButtonDisabled(true);
+      const selectedIngredientsId = selectedItems.map(({ _id }) => _id);
+      const body = {
+        ingredients: [selectedBun._id, ...selectedIngredientsId],
+      };
+
+      const res = await fetch(API_URL.CREATE_ORDER, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) throw new Error(`Ошибка: ${res.status}`);
+
+      const json = await res.json();
+
+      const orderNumberFromServer = json.order.number;
+
+      if (orderNumberFromServer && typeof orderNumberFromServer === "number") {
+        setOrderNumber(orderNumberFromServer);
+        setIsOrderDetailsModalIsOpen(true);
+        setSelectedBun({});
+        setSelectedItems([]);
+        setSelectedItemsCount({});
+        setQueryCount(0);
+      } else {
+        throw new Error("Ошибка: В ответе от сервера отсутствует номер заказа");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsOrderButtonDisabled(false);
+    }
   };
 
   const handleCloseOrderDetailsModal = () => {
@@ -97,45 +141,57 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <AppHeader />
+      <BurgerConstructorContext.Provider
+        value={{
+          selectedBun,
+          handleBunSelection,
+          selectedItems,
+          handleItemAddition,
+        }}
+      >
+        <AppHeader />
 
-      <main className={styles.main}>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <BurgerIngredients
-            handleItemAddition={handleItemAddition}
-            handleOpenIngredientDetailsModal={handleOpenIngredientDetailsModal}
-            selectedBun={selectedBun}
-            handleBunSelection={handleBunSelection}
-            selectedItemsCount={selectedItemsCount}
-            data={data}
-          />
-        )}
-        {Object.keys(selectedBun).length !== 0 && (
-          <BurgerConstructor
-            selectedItems={selectedItems}
-            selectedBun={selectedBun}
-            fullPrice={fullPrice}
-            handleOpenOrderDetailsModal={handleOpenOrderDetailsModal}
-          />
-        )}
+        <main className={styles.main}>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <BurgerIngredients
+              handleItemAddition={handleItemAddition}
+              handleOpenIngredientDetailsModal={
+                handleOpenIngredientDetailsModal
+              }
+              selectedBun={selectedBun}
+              handleBunSelection={handleBunSelection}
+              selectedItemsCount={selectedItemsCount}
+              data={data}
+            />
+          )}
+          {Object.keys(selectedBun).length !== 0 && (
+            <BurgerConstructor
+              selectedItems={selectedItems}
+              selectedBun={selectedBun}
+              fullPrice={fullPrice}
+              handleOpenOrderDetailsModal={handleOpenOrderDetailsModal}
+              isOrderButtonDisabled={isOrderButtonDisabled}
+            />
+          )}
 
-        {isOrderDetailsModalIsOpen && (
-          <Modal onClose={handleCloseOrderDetailsModal}>
-            <OrderDetails orderNumber={orderNumber} />
-          </Modal>
-        )}
+          {isOrderDetailsModalIsOpen && (
+            <Modal onClose={handleCloseOrderDetailsModal}>
+              <OrderDetails orderNumber={orderNumber} />
+            </Modal>
+          )}
 
-        {isIngredientDetailsModalIsOpen && (
-          <Modal
-            onClose={handleCloseIngredientDetailsModal}
-            header="Детали ингридиента"
-          >
-            <IngredientDetails currentIngredient={currentIngredient} />
-          </Modal>
-        )}
-      </main>
+          {isIngredientDetailsModalIsOpen && (
+            <Modal
+              onClose={handleCloseIngredientDetailsModal}
+              header="Детали ингридиента"
+            >
+              <IngredientDetails currentIngredient={currentIngredient} />
+            </Modal>
+          )}
+        </main>
+      </BurgerConstructorContext.Provider>
     </div>
   );
 };

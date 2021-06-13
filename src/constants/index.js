@@ -1,3 +1,3 @@
-import API_URL from "./API_URL";
+import INGREDIENTS_API_URL from "./API_URL";
 
-export {API_URL}
+export { INGREDIENTS_API_URL };
