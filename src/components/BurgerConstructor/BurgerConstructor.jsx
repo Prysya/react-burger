@@ -1,24 +1,37 @@
-import React, { memo, useContext } from "react";
+import React, { memo } from "react";
 import { ScrollableContainer } from "../UI";
 import { BurgerElement } from "./";
-import PropTypes from "prop-types";
 
 import styles from "./BurgerConstructor.module.css";
 import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerConstructorContext } from "../../context";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteAllIngredientsAndBun,
+  deleteIngredient,
+  handleOpenOrderDetailsModal,
+} from "../../services/reducers";
 
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoButton = memo(Button);
 
-const BurgerConstructor = ({
-  fullPrice,
-  handleOpenOrderDetailsModal,
-  isOrderButtonDisabled,
-}) => {
-  const { selectedBun, selectedItems } = useContext(BurgerConstructorContext);
+const BurgerConstructor = () => {
+  const {
+    items: { selectedBun, selectedItems, fullPrice },
+    modalWindows: { isOrderButtonDisabled },
+  } = useSelector(({ items, modalWindows }) => ({ items, modalWindows }));
+
+  const dispatch = useDispatch();
+
+  const handleOrderButtonClick = () => {
+    dispatch(handleOpenOrderDetailsModal({ selectedItems, selectedBun }))
+      .then(() => {
+        dispatch(deleteAllIngredientsAndBun());
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <section className={`${styles.section} pt-25 pb-10`}>
@@ -31,13 +44,14 @@ const BurgerConstructor = ({
       />
       <ScrollableContainer>
         <ul className={styles.burgerItemsContainer}>
-          {selectedItems.map(({ name, price, image, _id, queryCount }) => (
+          {selectedItems.map(({ name, price, image, _id }, index) => (
             <BurgerElement
               name={name}
               price={price}
               image={image}
               nodeType="li"
-              key={_id + queryCount}
+              key={_id + index}
+              handleClose={() => dispatch(deleteIngredient(index))}
             />
           ))}
         </ul>
@@ -56,21 +70,13 @@ const BurgerConstructor = ({
         <MemoButton
           type="primary"
           size="medium"
-          onClick={
-            isOrderButtonDisabled ? undefined : handleOpenOrderDetailsModal
-          }
+          onClick={isOrderButtonDisabled ? undefined : handleOrderButtonClick}
         >
           {isOrderButtonDisabled ? "Заказ оформляется..." : "Оформить заказ"}
         </MemoButton>
       </div>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  fullPrice: PropTypes.number.isRequired,
-  handleOpenOrderDetailsModal: PropTypes.func.isRequired,
-  isOrderButtonDisabled: PropTypes.bool,
 };
 
 export default BurgerConstructor;
