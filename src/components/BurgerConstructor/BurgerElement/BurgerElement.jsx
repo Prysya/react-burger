@@ -6,7 +6,7 @@ import styles from './BurgerElement.module.css'
 
 const MemoDragItem = memo(DragIcon);
 
-const BurgerElement = ({type, isLocked, name, price, image, nodeType = 'div'}) => {
+const BurgerElement = ({type, isLocked, name, price, image, nodeType = 'div', handleClose}) => {
   const NodeType = nodeType;
 
   return (
@@ -18,6 +18,7 @@ const BurgerElement = ({type, isLocked, name, price, image, nodeType = 'div'}) =
         text={name}
         price={price}
         thumbnail={image}
+        handleClose={handleClose ? handleClose : undefined}
       />
     </NodeType>
   );
@@ -30,6 +31,7 @@ BurgerElement.propTypes = {
   price: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
   nodeType: PropTypes.string,
+  handleClose: PropTypes.func,
 }
 
 
