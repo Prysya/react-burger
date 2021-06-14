@@ -9,16 +9,11 @@ import PropTypes from "prop-types";
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoCounter = memo(Counter);
 
-const IngredientCard = ({ count, handleItemAddition, item, handleOpenIngredientDetailsModal }) => {
+const IngredientCard = ({ count, handleIngredientClick, item }) => {
   const { name, image, price } = item;
 
-  const handleOnClick = () => {
-    handleItemAddition(item);
-    handleOpenIngredientDetailsModal(item);
-  };
-
   return (
-    <li className={styles.card} onClick={handleOnClick}>
+    <li className={styles.card} onClick={() => handleIngredientClick(item)}>
       {count > 0 && <MemoCounter count={count} size="default" />}
       <img className={`${styles.image} mb-1`} src={image} alt={name} />
       <div className={`${styles.price} mb-1`}>
@@ -33,13 +28,12 @@ const IngredientCard = ({ count, handleItemAddition, item, handleOpenIngredientD
 
 IngredientCard.propTypes = {
   count: PropTypes.number.isRequired,
-  handleItemAddition: PropTypes.func.isRequired,
+  handleIngredientClick: PropTypes.func.isRequired,
   item: PropTypes.shape({
     name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
   }),
-  handleOpenIngredientDetailsModal: PropTypes.func.isRequired,
 };
 
 export default memo(IngredientCard);
