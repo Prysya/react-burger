@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = {
   fullPrice: 0,
@@ -35,14 +35,38 @@ const itemsReducer = createSlice({
     },
     deleteIngredient: (state, action) => {
       state.selectedItems = [...state.selectedItems].filter(
-        (_, index) => index !== action.payload
+        (_, index) => index !== action.payload.index
       );
+      state.selectedItemsCount = {
+        ...state.selectedItemsCount,
+        [action.payload.name]:
+          state.selectedItemsCount[action.payload.name] - 1,
+      };
     },
-    deleteAllIngredientsAndBun: state => {
+    deleteAllIngredientsAndBun: (state) => {
       state.selectedItems = [];
       state.selectedBun = {};
       state.selectedItemsCount = {};
-    }
+    },
+    handleItemMove: (state, action) => {
+      const dragItem = state.selectedItems[action.payload.dragIndex];
+
+      if (dragItem) {
+        const newSelectedItemsArr = [...state.selectedItems];
+
+        const prevItem = newSelectedItemsArr.splice(
+          action.payload.hoverIndex,
+          1,
+          dragItem
+        );
+
+        newSelectedItemsArr.splice(action.payload.dragIndex, 1, prevItem[0]);
+
+        console.log(newSelectedItemsArr);
+
+        state.selectedItems = newSelectedItemsArr;
+      }
+    },
   },
 });
 
@@ -52,6 +76,7 @@ export const {
   setCurrentIngredient,
   calculateFullPrice,
   deleteIngredient,
-  deleteAllIngredientsAndBun
+  deleteAllIngredientsAndBun,
+  handleItemMove,
 } = itemsReducer.actions;
 export default itemsReducer.reducer;

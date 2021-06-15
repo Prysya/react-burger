@@ -5,7 +5,8 @@ import itemsReducer, {
   setCurrentIngredient,
   calculateFullPrice,
   deleteIngredient,
-  deleteAllIngredientsAndBun
+  deleteAllIngredientsAndBun,
+  handleItemMove
 } from "./itemsReducer";
 import modalWindowsReducer, {
   handleOpenIngredientDetailsModal,
@@ -25,6 +26,7 @@ export {
   calculateFullPrice,
   deleteIngredient,
   deleteAllIngredientsAndBun,
+  handleItemMove,
 
   modalWindowsReducer,
   handleOpenIngredientDetailsModal,
