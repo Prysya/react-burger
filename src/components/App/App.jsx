@@ -12,13 +12,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   calculateFullPrice,
   getDataFromApi,
+  handleBunSelection,
   handleCloseIngredientDetailsModal,
   handleCloseOrderDetailsModal,
 } from "../../services/reducers";
 
 const App = () => {
   const {
-    data: { dataLoading },
+    data: { dataLoading, data },
     items: { selectedBun, selectedItems, currentIngredient },
     modalWindows: {
       isIngredientDetailsModalIsOpen,
@@ -36,6 +37,14 @@ const App = () => {
   useEffect(() => {
     dispatch(getDataFromApi());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (data) {
+      const bun = data.find((item) => item.type === "bun");
+
+      bun && dispatch(handleBunSelection(bun));
+    }
+  }, [data, dispatch]);
 
   useEffect(() => {
     dispatch(calculateFullPrice());
