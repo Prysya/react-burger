@@ -10,6 +10,7 @@ import { useDrag, useDrop } from "react-dnd";
 import classnames from "classnames";
 import { useDispatch } from "react-redux";
 import { deleteIngredient, handleItemMove } from "../../../services/reducers";
+import {ITEM_TYPES} from "../../../constants";
 
 const MemoDragItem = memo(DragIcon);
 
@@ -30,7 +31,7 @@ const BurgerElement = ({
   const ref = useRef(null);
 
   const [{ handlerId }, drop] = useDrop({
-    accept: "burgerElement",
+    accept: ITEM_TYPES.burgerElement,
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
@@ -70,7 +71,7 @@ const BurgerElement = ({
   });
 
   const [{ isDrag }, drag] = useDrag({
-    type: "burgerElement",
+    type: ITEM_TYPES.burgerElement,
     item: { id, index },
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),
