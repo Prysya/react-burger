@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   fullPrice: 0,
@@ -23,7 +23,7 @@ const itemsReducer = createSlice({
           (state.selectedItemsCount[action.payload.name] || 0) + 1,
       };
 
-      state.selectedItems.push(action.payload);
+      state.selectedItems.push({ ...action.payload, randomId: Math.random().toString(36).substring(2, 15) });
     },
     setCurrentIngredient: (state, action) => {
       state.currentIngredient = action.payload;
@@ -61,8 +61,6 @@ const itemsReducer = createSlice({
         );
 
         newSelectedItemsArr.splice(action.payload.dragIndex, 1, prevItem[0]);
-
-        console.log(newSelectedItemsArr);
 
         state.selectedItems = newSelectedItemsArr;
       }
