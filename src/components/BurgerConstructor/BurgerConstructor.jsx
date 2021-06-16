@@ -13,7 +13,6 @@ import {
   handleOpenOrderDetailsModal,
 } from "../../services/reducers";
 import classnames from "classnames";
-import {useDrop} from "react-dnd";
 
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoButton = memo(Button);
@@ -23,13 +22,6 @@ const BurgerConstructor = () => {
     items: { selectedBun, selectedItems, fullPrice },
     modalWindows: { isOrderButtonDisabled },
   } = useSelector(({ items, modalWindows }) => ({ items, modalWindows }));
-
-  // const [, dropTarget] = useDrop({
-  //   accept: 'burgerElement',
-  //   drop(itemId) {
-  //     console.log("BURGERCONST:", itemId)
-  //   }
-  // })
 
   const dispatch = useDispatch();
 
@@ -42,7 +34,7 @@ const BurgerConstructor = () => {
   };
 
   return (
-    <section className={classnames(styles.section, 'pt-25', 'pb-10')}>
+    <section className={classnames(styles.section, "pt-25", "pb-10")}>
       <BurgerElement
         type="top"
         isLocked={true}
@@ -52,15 +44,15 @@ const BurgerConstructor = () => {
       />
 
       <ScrollableContainer>
-        <ul className={styles.burgerItemsContainer} >
-          {selectedItems.map(({ name, price, image, _id }, index) => (
+        <ul className={styles.burgerItemsContainer}>
+          {selectedItems.map(({ name, price, image, _id, randomId }, index) => (
             <BurgerElement
               name={name}
               price={price}
               image={image}
               nodeType="li"
               index={index}
-              key={_id + index}
+              key={randomId}
               id={_id}
             />
           ))}
