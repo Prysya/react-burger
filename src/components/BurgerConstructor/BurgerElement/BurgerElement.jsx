@@ -77,8 +77,6 @@ const BurgerElement = ({
     }),
   });
 
-  console.log(id);
-
   const containerIsDragging = isDrag ? styles.containerIsDragging : "";
 
   drag(drop(ref));
