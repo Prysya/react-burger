@@ -43,9 +43,8 @@ const itemsReducer = createSlice({
           state.selectedItemsCount[action.payload.name] - 1,
       };
     },
-    deleteAllIngredientsAndBun: (state) => {
+    deleteAllIngredients: (state) => {
       state.selectedItems = [];
-      state.selectedBun = {};
       state.selectedItemsCount = {};
     },
     handleItemMove: (state, action) => {
@@ -74,7 +73,7 @@ export const {
   setCurrentIngredient,
   calculateFullPrice,
   deleteIngredient,
-  deleteAllIngredientsAndBun,
+  deleteAllIngredients,
   handleItemMove,
 } = itemsReducer.actions;
 export default itemsReducer.reducer;
