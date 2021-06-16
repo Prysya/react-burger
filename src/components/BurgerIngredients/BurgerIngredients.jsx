@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from "react";
+import React, {memo, useCallback, useRef, useState} from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerIngredients.module.css";
 import { scroller } from "react-scroll";
@@ -30,7 +30,7 @@ const BurgerIngredients = () => {
   const saucesRef = useRef(null);
   const toppingsRef = useRef(null);
 
-  const handleIngredientClick = (item) => {
+  const handleIngredientClick = useCallback((item) => {
     if (item.type === "bun") {
       dispatch(handleBunSelection(item));
     } else {
@@ -39,9 +39,9 @@ const BurgerIngredients = () => {
 
     dispatch(setCurrentIngredient(item));
     dispatch(handleOpenIngredientDetailsModal());
-  };
+  }, [dispatch]);
 
-  const handleTabClick = (current) => {
+  const handleTabClick = useCallback((current) => {
     scroller.scrollTo(current, {
       duration: 800,
       delay: 10,
@@ -49,9 +49,9 @@ const BurgerIngredients = () => {
       containerId: "burgerIngredientsScrollableContainer",
       offset: -20,
     });
-  };
+  },[]);
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (
       containerRef.current &&
       bunsRef.current &&
@@ -75,7 +75,7 @@ const BurgerIngredients = () => {
         min === bunDistance ? "buns" : min === sauceDistance ? "sauces" : "toppings"
       );
     }
-  };
+  }, []);
 
   return (
     <section className={`${styles.section} pt-10 pb-10`}>
