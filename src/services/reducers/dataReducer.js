@@ -45,7 +45,8 @@ const dataReducer = createSlice({
     [getDataFromApi.fulfilled]: (state, action) => {
       if (state.dataLoading === LOAD_STATUSES.pending) {
         state.dataLoading = LOAD_STATUSES.idle;
-        state.data = action.payload;
+        // eslint-disable-next-line valid-typeof
+        state.data = typeof action.payload === "Array" ? action.payload : [];
       }
     },
     [getDataFromApi.rejected]: (state, action) => {
