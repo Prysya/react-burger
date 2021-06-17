@@ -111,7 +111,7 @@ const BurgerIngredients = () => {
         onScroll={handleScroll}
       >
         <IngredientsContainerWithTitle title="Булки" name="buns" containerRef={bunsRef}>
-          {data
+          {Array.isArray(data) && data
             .filter((item) => item.type === "bun")
             .map((item) => {
               return (
@@ -125,7 +125,7 @@ const BurgerIngredients = () => {
             })}
         </IngredientsContainerWithTitle>
         <IngredientsContainerWithTitle title="Соусы" name="sauces" containerRef={saucesRef}>
-          {data
+          {Array.isArray(data) && data
             .filter((item) => item.type === "sauce")
             .map((item) => (
               <IngredientCard
@@ -137,7 +137,7 @@ const BurgerIngredients = () => {
             ))}
         </IngredientsContainerWithTitle>
         <IngredientsContainerWithTitle title="Начинки" name="toppings" containerRef={toppingsRef}>
-          {data
+          {Array.isArray(data) && data
             .filter((item) => item.type === "main")
             .map((item) => (
               <IngredientCard

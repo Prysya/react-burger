@@ -45,7 +45,7 @@ const handleOpenOrderDetailsModal = createAsyncThunk(
       throw new Error(MESSAGES.errors.orderNumberIsUndefined);
     } catch (err) {
       console.error(err);
-      return err;
+      throw new Error(err);
     }
   }
 );

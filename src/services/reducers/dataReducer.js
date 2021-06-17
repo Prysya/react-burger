@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { API_URL, LOAD_STATUSES, MESSAGES } from "../../constants";
+import {API_URL, fakeApi, LOAD_STATUSES, MESSAGES} from "../../constants";
 
 const initialState = {
   data: [],
@@ -28,7 +28,7 @@ const getDataFromApi = createAsyncThunk(
       throw new Error(MESSAGES.errors.dataIsUndefined);
     } catch (err) {
       console.error(err);
-      return err;
+      throw new Error(err);
     }
   }
 );
@@ -45,14 +45,14 @@ const dataReducer = createSlice({
     [getDataFromApi.fulfilled]: (state, action) => {
       if (state.dataLoading === LOAD_STATUSES.pending) {
         state.dataLoading = LOAD_STATUSES.idle;
-        // eslint-disable-next-line valid-typeof
-        state.data = typeof action.payload === "Array" ? action.payload : [];
+        state.data = action.payload;
       }
     },
     [getDataFromApi.rejected]: (state, action) => {
       if (state.dataLoading === LOAD_STATUSES.pending) {
         state.dataLoading = LOAD_STATUSES.idle;
         state.dataError = action.error;
+        state.data = fakeApi;
       }
     },
   },
