@@ -17,3 +17,7 @@
   left: 0;
   cursor: ns-resize;
 }
+
+.containerIsDragging :global(.constructor-element) {
+  opacity: 0.4;
+}

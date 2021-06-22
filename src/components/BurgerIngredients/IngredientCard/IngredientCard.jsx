@@ -5,22 +5,36 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./IngredientCard.module.css";
 import PropTypes from "prop-types";
+import { useDrag } from "react-dnd";
+import { ITEM_TYPES } from "../../../constants";
 
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoCounter = memo(Counter);
 
-const IngredientCard = ({ count, handleItemAddition, item, handleOpenIngredientDetailsModal }) => {
+const IngredientCard = ({ count, handleIngredientClick, item }) => {
   const { name, image, price } = item;
-
-  const handleOnClick = () => {
-    handleItemAddition(item);
-    handleOpenIngredientDetailsModal(item);
-  };
+  const [{ opacity }, drag, dragPreview] = useDrag({
+    item,
+    type: ITEM_TYPES.ingredient,
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.4 : 1,
+    }),
+  });
 
   return (
-    <li className={styles.card} onClick={handleOnClick}>
+    <li
+      className={styles.card}
+      onClick={() => handleIngredientClick(item)}
+      ref={drag}
+      style={{ opacity }}
+    >
       {count > 0 && <MemoCounter count={count} size="default" />}
-      <img className={`${styles.image} mb-1`} src={image} alt={name} />
+      <img
+        className={`${styles.image} mb-1`}
+        src={image}
+        alt={name}
+        ref={dragPreview}
+      />
       <div className={`${styles.price} mb-1`}>
         <span className={`text text_type_digits-default mr-1`}>{price}</span>
         <MemoCurrencyIcon type="primary" />
@@ -33,13 +47,12 @@ const IngredientCard = ({ count, handleItemAddition, item, handleOpenIngredientD
 
 IngredientCard.propTypes = {
   count: PropTypes.number.isRequired,
-  handleItemAddition: PropTypes.func.isRequired,
+  handleIngredientClick: PropTypes.func.isRequired,
   item: PropTypes.shape({
     name: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
   }),
-  handleOpenIngredientDetailsModal: PropTypes.func.isRequired,
 };
 
 export default memo(IngredientCard);

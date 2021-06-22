@@ -1,27 +1,71 @@
-import React, { memo, useContext } from "react";
+import React, {memo, useCallback, useMemo} from "react";
 import { ScrollableContainer } from "../UI";
 import { BurgerElement } from "./";
-import PropTypes from "prop-types";
 
 import styles from "./BurgerConstructor.module.css";
 import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerConstructorContext } from "../../context";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteAllIngredients,
+  handleBunSelection,
+  handleItemAddition,
+  handleOpenOrderDetailsModal,
+} from "../../services/reducers";
+import classnames from "classnames";
+import { useDrop } from "react-dnd";
+import { ITEM_TYPES } from "../../constants";
 
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoButton = memo(Button);
 
-const BurgerConstructor = ({
-  fullPrice,
-  handleOpenOrderDetailsModal,
-  isOrderButtonDisabled,
-}) => {
-  const { selectedBun, selectedItems } = useContext(BurgerConstructorContext);
+const BurgerConstructor = () => {
+  const {
+    items: { selectedBun, selectedItems, fullPrice },
+    modalWindows: { isOrderButtonDisabled },
+  } = useSelector(({ items, modalWindows }) => ({ items, modalWindows }));
+
+  const [{ isHover, item }, drop] = useDrop({
+    accept: ITEM_TYPES.ingredient,
+    drop: (item) => {
+      return item.type === "bun"
+        ? dispatch(handleBunSelection(item))
+        : dispatch(handleItemAddition(item));
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+      item: monitor.getItem(),
+    }),
+  });
+
+  const dispatch = useDispatch();
+
+  const handleOrderButtonClick = useCallback(() => {
+    dispatch(handleOpenOrderDetailsModal({ selectedItems, selectedBun }))
+      .then(() => {
+        dispatch(deleteAllIngredients());
+      })
+      .catch((err) => console.error(err));
+
+    //eslint-disable-next-line
+  }, [dispatch]);
+
+  const hoveredClass = useMemo(() => selectedItems.length === 0
+    ? styles.hoveredElements_empty
+    : styles.hoveredElements, [selectedItems])
 
   return (
-    <section className={`${styles.section} pt-25 pb-10`}>
+    <section
+      className={classnames(
+        styles.section,
+        isHover && item.type === "bun" && styles.hoveredBun,
+        "pt-25",
+        "pb-10"
+      )}
+      ref={drop}
+    >
       <BurgerElement
         type="top"
         isLocked={true}
@@ -29,19 +73,27 @@ const BurgerConstructor = ({
         name={`${selectedBun.name} (верх)`}
         price={selectedBun.price}
       />
-      <ScrollableContainer>
+
+      <ScrollableContainer
+        className={classnames(
+          isHover && item.type !== "bun" && hoveredClass
+        )}
+      >
         <ul className={styles.burgerItemsContainer}>
-          {selectedItems.map(({ name, price, image, _id, queryCount }) => (
+          {selectedItems.map(({ name, price, image, _id, randomId }, index) => (
             <BurgerElement
               name={name}
               price={price}
               image={image}
               nodeType="li"
-              key={_id + queryCount}
+              index={index}
+              key={randomId}
+              id={_id}
             />
           ))}
         </ul>
       </ScrollableContainer>
+
       <BurgerElement
         type="bottom"
         isLocked={true}
@@ -56,21 +108,13 @@ const BurgerConstructor = ({
         <MemoButton
           type="primary"
           size="medium"
-          onClick={
-            isOrderButtonDisabled ? undefined : handleOpenOrderDetailsModal
-          }
+          onClick={isOrderButtonDisabled ? undefined : handleOrderButtonClick}
         >
           {isOrderButtonDisabled ? "Заказ оформляется..." : "Оформить заказ"}
         </MemoButton>
       </div>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  fullPrice: PropTypes.number.isRequired,
-  handleOpenOrderDetailsModal: PropTypes.func.isRequired,
-  isOrderButtonDisabled: PropTypes.bool,
 };
 
 export default BurgerConstructor;
