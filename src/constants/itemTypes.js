@@ -1,6 +1,4 @@
-const ITEM_TYPES = {
-  ingredient: 'ingredient',
-  burgerElement: 'burgerElement'
+export const ITEM_TYPES = {
+  INGREDIENT: 'ingredient',
+  BURGER_ELEMENT: 'burgerElement'
 }
-
-export default ITEM_TYPES;
