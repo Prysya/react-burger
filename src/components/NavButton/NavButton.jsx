@@ -1,11 +1,13 @@
-import React, { memo} from "react";
+import React, { memo } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import styles from "./NavItem.module.css";
+
+import styles from "./NavButton.module.css";
+
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-const NavItem = ({ IconComponent, text, to }) => {
-  const {pathname} = useLocation();
+const NavButton = ({ IconComponent, text, to, textSize = "default" }) => {
+  const { pathname } = useLocation();
 
   return (
     <div className="p-5">
@@ -14,23 +16,26 @@ const NavItem = ({ IconComponent, text, to }) => {
         className={classNames(
           styles.link,
           "text",
-          "text_type_main-default",
+          `text_type_main-${textSize}`,
           "text_color_inactive"
         )}
         activeClassName={styles.active}
         to={to}
       >
-        <IconComponent type={pathname === to ? "primary" : "secondary"} />
+        {IconComponent && (
+          <IconComponent type={pathname === to ? "primary" : "secondary"} />
+        )}
         {text}
       </NavLink>
     </div>
   );
 };
 
-NavItem.propTypes = {
-  IconComponent: PropTypes.func.isRequired,
+NavButton.propTypes = {
+  IconComponent: PropTypes.func,
   text: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
+  textSize: PropTypes.oneOf(['default', 'large', 'medium', 'small'])
 };
 
-export default memo(NavItem);
+export default memo(NavButton);
