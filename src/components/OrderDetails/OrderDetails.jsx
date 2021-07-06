@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+
 import styles from "./OrderDetails.module.css";
-import { OrderDoneImage } from "../UI";
+
+import { OrderDoneImage } from "../../uikit";
 
 const OrderDetails = ({ orderNumber }) => {
   return (
