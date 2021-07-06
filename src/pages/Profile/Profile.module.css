@@ -1,0 +1,12 @@
+.profileContainer {
+  max-width: calc(1920px - (320px * 2));
+  display: flex;
+  gap: 60px;
+  width: 100%;
+  align-items: center;
+}
+
+.linksContainer {
+  max-width: 340px;
+}
+
