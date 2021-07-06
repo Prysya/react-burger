@@ -6,22 +6,36 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./AppHeader.module.css";
-import { NavItem } from "./";
+import { NavButton } from "../";
+import { ROUTES } from "../../constants";
+import {useSelector} from "react-redux";
 
 const AppHeader = () => {
+  const {isAuthenticated} = useSelector(state => state.auth)
+  
   return (
     <header className={`${styles.header} p-4`}>
       <nav className={styles.nav}>
         <div className={styles.leftTabsContainer}>
-          <NavItem
+          <NavButton
             IconComponent={BurgerIcon}
             text="Конструктор"
-            isActive
+            to={ROUTES.MAIN}
           />
-          <NavItem IconComponent={ListIcon} text="Лента заказов" />
+          <NavButton
+            IconComponent={ListIcon}
+            to={ROUTES.FEED}
+            text="Лента заказов"
+          />
         </div>
+
         <Logo />
-        <NavItem IconComponent={ProfileIcon} text="Личный кабинет" />
+
+        <NavButton
+          IconComponent={ProfileIcon}
+          to={isAuthenticated ? ROUTES.PROFILE : ROUTES.LOGIN}
+          text="Личный кабинет"
+        />
       </nav>
     </header>
   );
