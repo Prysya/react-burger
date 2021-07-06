@@ -1,29 +1,49 @@
-import React, {memo, useCallback, useRef, useState} from "react";
+import React, {memo, useCallback, useEffect, useRef, useState} from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./BurgerIngredients.module.css";
+import { useDispatch, useSelector } from "react-redux";
 import { scroller } from "react-scroll";
+import {useHistory} from "react-router-dom";
+
+import styles from "./BurgerIngredients.module.css";
 
 import { IngredientsContainerWithTitle, IngredientCard } from "./";
-import { ScrollableContainer } from "../UI";
-import { useDispatch, useSelector } from "react-redux";
+import { ScrollableContainer } from "../../uikit";
 import {
+  getDataFromApi,
   handleBunSelection,
   handleItemAddition,
   handleOpenIngredientDetailsModal,
   setCurrentIngredient,
-} from "../../services/reducers";
+} from "../../services/slices";
+import {Loader} from "../Loader";
+import {LOAD_STATUSES, ROUTES} from "../../constants";
 
 const MemoTab = memo(Tab);
 
 const BurgerIngredients = () => {
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+  
   const [current, setCurrent] = useState("buns");
 
   const {
-    data: { data },
+    data: { data, dataLoading },
     items: { selectedItemsCount, selectedBun },
   } = useSelector(({ data, items }) => ({ data, items }));
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getDataFromApi());
+    //eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      const bun = data.find((item) => item.type === "bun");
+
+      bun && dispatch(handleBunSelection(bun));
+    }
+  }, [data, dispatch]);
 
   const containerRef = useRef(null);
   const bunsRef = useRef(null);
@@ -39,7 +59,11 @@ const BurgerIngredients = () => {
 
     dispatch(setCurrentIngredient(item));
     dispatch(handleOpenIngredientDetailsModal());
-  }, [dispatch]);
+    
+    history.replace({pathname: `${ROUTES.INGREDIENTS}/${item._id}`})
+    
+    //eslint-disable-next-line
+  }, []);
 
   const handleTabClick = useCallback((current) => {
     scroller.scrollTo(current, {
@@ -77,8 +101,10 @@ const BurgerIngredients = () => {
     }
   }, []);
 
+  if (dataLoading === LOAD_STATUSES.PENDING) return <Loader />
+
   return (
-    <section className={`${styles.section} pt-10 pb-10`}>
+    <div className={`${styles.section} pt-10 pb-10`}>
       <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
       <div style={{ display: "flex" }}>
         <MemoTab
@@ -149,8 +175,8 @@ const BurgerIngredients = () => {
             ))}
         </IngredientsContainerWithTitle>
       </ScrollableContainer>
-    </section>
+    </div>
   );
 };
 
-export default BurgerIngredients;
+export default memo(BurgerIngredients);
