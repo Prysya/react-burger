@@ -1,0 +1,9 @@
+.link {
+  text-decoration: none;
+  display: flex;
+  gap: calc(var(--offset-base-size) * 2)
+}
+
+.active {
+  color: var(--text-primary-color) !important;
+}
