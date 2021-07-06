@@ -1,62 +1,39 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {API_URL, fakeApi, LOAD_STATUSES, MESSAGES} from "../../constants";
+import { createSlice } from "@reduxjs/toolkit";
+
+import { LOAD_STATUSES } from "../../../constants";
+import { getDataFromApi } from "./getDataFromApi";
 
 const initialState = {
   data: [],
-  dataLoading: LOAD_STATUSES.idle,
+  dataLoading: LOAD_STATUSES.IDLE,
   dataError: null,
 };
 
-const getDataFromApi = createAsyncThunk(
-  "data/getDataFromApi",
-  async (_, { getState }) => {
-    const { dataLoading } = getState().data;
-
-    if (dataLoading !== LOAD_STATUSES.pending) return;
-
-    try {
-      const res = await fetch(API_URL.INGREDIENTS);
-
-      if (!res.ok) throw new Error(res.message);
-
-      const { data } = await res.json();
-
-      if (data && Array.isArray(data)) {
-        return await data;
-      }
-
-      throw new Error(MESSAGES.errors.dataIsUndefined);
-    } catch (err) {
-      console.error(err);
-      throw new Error(err);
-    }
-  }
-);
-
-const dataReducer = createSlice({
+const dataSlice = createSlice({
   name: "data",
   initialState,
   extraReducers: {
     [getDataFromApi.pending]: (state) => {
-      if (state.dataLoading === LOAD_STATUSES.idle) {
-        state.dataLoading = LOAD_STATUSES.pending;
+      if (state.dataLoading === LOAD_STATUSES.IDLE) {
+        state.dataLoading = LOAD_STATUSES.PENDING;
+        state.dataError = null;
       }
     },
     [getDataFromApi.fulfilled]: (state, action) => {
-      if (state.dataLoading === LOAD_STATUSES.pending) {
-        state.dataLoading = LOAD_STATUSES.idle;
+      if (state.dataLoading === LOAD_STATUSES.PENDING) {
+        state.dataLoading = LOAD_STATUSES.IDLE;
         state.data = action.payload;
       }
     },
     [getDataFromApi.rejected]: (state, action) => {
-      if (state.dataLoading === LOAD_STATUSES.pending) {
-        state.dataLoading = LOAD_STATUSES.idle;
+      if (state.dataLoading === LOAD_STATUSES.PENDING) {
+        state.dataLoading = LOAD_STATUSES.IDLE;
         state.dataError = action.error;
-        state.data = fakeApi;
+        state.data = [];
       }
     },
   },
 });
 
 export { getDataFromApi };
-export default dataReducer.reducer;
+export default dataSlice.reducer;

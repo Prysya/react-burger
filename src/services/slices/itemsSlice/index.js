@@ -8,7 +8,7 @@ const initialState = {
   currentIngredient: {},
 };
 
-const itemsReducer = createSlice({
+const itemsSlice = createSlice({
   name: "items",
   initialState,
   reducers: {
@@ -75,5 +75,5 @@ export const {
   deleteIngredient,
   deleteAllIngredients,
   handleItemMove,
-} = itemsReducer.actions;
-export default itemsReducer.reducer;
+} = itemsSlice.actions;
+export default itemsSlice.reducer;

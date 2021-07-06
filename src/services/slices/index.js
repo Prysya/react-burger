@@ -1,36 +1,12 @@
-import dataReducer, { getDataFromApi } from "./dataReducer";
-import itemsReducer, {
-  handleBunSelection,
-  handleItemAddition,
-  setCurrentIngredient,
-  calculateFullPrice,
-  deleteIngredient,
-  deleteAllIngredients,
-  handleItemMove
-} from "./itemsReducer";
-import modalWindowsReducer, {
-  handleOpenIngredientDetailsModal,
-  handleCloseIngredientDetailsModal,
-  handleOpenOrderDetailsModal,
-  handleCloseOrderDetailsModal
-} from "./modalWindowsReducer";
+import dataSlice from "./dataSlice";
+import itemsSlice from "./itemsSlice";
+import modalWindowsSlice from "./modalWindowsSlice";
+import formSlice from "./formSlice";
+import authSlice from "./authSlice";
 
-export {
-  dataReducer,
-  getDataFromApi,
-
-  itemsReducer,
-  handleBunSelection,
-  handleItemAddition,
-  setCurrentIngredient,
-  calculateFullPrice,
-  deleteIngredient,
-  deleteAllIngredients,
-  handleItemMove,
-
-  modalWindowsReducer,
-  handleOpenIngredientDetailsModal,
-  handleCloseIngredientDetailsModal,
-  handleOpenOrderDetailsModal,
-  handleCloseOrderDetailsModal
-};
+export { dataSlice, itemsSlice, modalWindowsSlice, formSlice, authSlice };
+export * from "./dataSlice";
+export * from "./itemsSlice";
+export * from "./modalWindowsSlice";
+export * from "./formSlice";
+export * from "./authSlice";
