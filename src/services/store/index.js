@@ -1,13 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { dataReducer, itemsReducer, modalWindowsReducer } from "../reducers";
+import {
+  authSlice,
+  dataSlice,
+  formSlice,
+  itemsSlice,
+  modalWindowsSlice,
+} from "../slices";
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    data: dataReducer,
-    items: itemsReducer,
-    modalWindows: modalWindowsReducer,
+    data: dataSlice,
+    items: itemsSlice,
+    modalWindows: modalWindowsSlice,
+    form: formSlice,
+    auth: authSlice,
   },
   devTools: process.env.NODE_ENV !== "production",
 });
-
-export default store;
