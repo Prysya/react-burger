@@ -25,6 +25,7 @@ import {
 import { ITEM_TYPES, LOAD_STATUSES, ROUTES } from "../../constants";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useHistory } from "react-router-dom";
+import classNames from "classnames";
 
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoButton = memo(Button);
@@ -86,7 +87,7 @@ const BurgerConstructor = () => {
   );
 
   if (dataLoading === LOAD_STATUSES.PENDING) return null;
-  
+
   return (
     <div
       className={classnames(
@@ -97,51 +98,86 @@ const BurgerConstructor = () => {
       )}
       ref={drop}
     >
-      <BurgerElement
-        type="top"
-        isLocked={true}
-        image={selectedBun.image}
-        name={`${selectedBun.name} (верх)`}
-        price={selectedBun.price}
-      />
-
-      <ScrollableContainer
-        className={classnames(isHover && item.type !== "bun" && hoveredClass)}
-      >
-        <ul className={styles.burgerItemsContainer}>
-          {selectedItems.map(({ name, price, image, _id, randomId }, index) => (
+      {Object.keys(selectedBun).length > 0 || selectedItems.length > 0 ? (
+        <>
+          {Object.keys(selectedBun).length > 0 && (
             <BurgerElement
-              name={name}
-              price={price}
-              image={image}
-              nodeType="li"
-              index={index}
-              key={randomId}
-              id={_id}
+              type="top"
+              isLocked={true}
+              image={selectedBun.image}
+              name={`${selectedBun.name} (верх)`}
+              price={selectedBun.price}
             />
-          ))}
-        </ul>
-      </ScrollableContainer>
+          )}
 
-      <BurgerElement
-        type="bottom"
-        isLocked={true}
-        image={selectedBun.image}
-        name={`${selectedBun.name} (низ)`}
-        price={selectedBun.price}
-      />
-      <div className={`${styles.footer} mt-10`}>
-        <span className="text text_type_digits-medium">
-          {fullPrice} <MemoCurrencyIcon type="primary" />
-        </span>
-        <MemoButton
-          type="primary"
-          size="medium"
-          onClick={isOrderButtonDisabled ? undefined : handleOrderButtonClick}
+          <ScrollableContainer
+            className={classnames(
+              isHover &&
+                (item.type !== "bun" ||
+                  Object.keys(selectedBun).length === 0) &&
+                hoveredClass
+            )}
+          >
+            <ul className={styles.burgerItemsContainer}>
+              {selectedItems.map(
+                ({ name, price, image, _id, randomId }, index) => (
+                  <BurgerElement
+                    name={name}
+                    price={price}
+                    image={image}
+                    nodeType="li"
+                    index={index}
+                    key={randomId}
+                    id={_id}
+                  />
+                )
+              )}
+            </ul>
+          </ScrollableContainer>
+
+          {Object.keys(selectedBun).length > 0 && (
+            <BurgerElement
+              type="bottom"
+              isLocked={true}
+              image={selectedBun.image}
+              name={`${selectedBun.name} (низ)`}
+              price={selectedBun.price}
+            />
+          )}
+          <div className={`${styles.footer} mt-10`}>
+            <span className="text text_type_digits-medium">
+              {fullPrice} <MemoCurrencyIcon type="primary" />
+            </span>
+            <MemoButton
+              type="primary"
+              size="medium"
+              onClick={
+                Object.keys(selectedBun).length === 0 || isOrderButtonDisabled
+                  ? undefined
+                  : handleOrderButtonClick
+              }
+            >
+              {Object.keys(selectedBun).length === 0
+                ? "Необходимо выбрать булочку"
+                : isOrderButtonDisabled
+                ? "Заказ оформляется..."
+                : "Оформить заказ"}
+            </MemoButton>
+          </div>
+        </>
+      ) : (
+        <div
+          className={classNames(
+            styles.emptyContainer,
+            isHover && styles.emptyContainerHovered,
+            "p-1"
+          )}
         >
-          {isOrderButtonDisabled ? "Заказ оформляется..." : "Оформить заказ"}
-        </MemoButton>
-      </div>
+          <h2 className="text text_type_main-medium">
+            Выберите или перенесите сюда булочку, а затем ингредиенты
+          </h2>
+        </div>
+      )}
     </div>
   );
 };
