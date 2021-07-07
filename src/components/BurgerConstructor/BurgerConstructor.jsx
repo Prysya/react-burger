@@ -19,7 +19,7 @@ import {
   handleBunSelection,
   handleGetUserData,
   handleItemAddition,
-  handleOpenOrderDetailsModal,
+  handleOpenOrderDetailsModal, handleWaitingOrderNumber,
 } from "../../services/slices";
 
 import { ITEM_TYPES, LOAD_STATUSES, ROUTES } from "../../constants";
@@ -36,19 +36,33 @@ const BurgerConstructor = () => {
   const history = useHistory();
 
   const {
+    auth: {isAuthenticated},
     data: { dataLoading },
     items: { selectedBun, selectedItems, fullPrice },
-    modalWindows: { isOrderButtonDisabled },
-  } = useSelector(({ items, modalWindows, data }) => ({
+    modalWindows: { isOrderButtonDisabled, orderNumberError, orderNumberWaitAuth },
+  } = useSelector(({ items, modalWindows, data, auth }) => ({
     items,
     modalWindows,
     data,
+    auth
   }));
 
   useEffect(() => {
     dispatch(calculateFullPrice());
   }, [dispatch, selectedBun, selectedItems]);
-
+  
+  useEffect(() => {
+    if (isAuthenticated && orderNumberWaitAuth) {
+      dispatch(handleOpenOrderDetailsModal())
+        .then(unwrapResult)
+        .then(() => dispatch(deleteAllIngredients()))
+        .catch(() => {});
+    }
+    
+    //eslint-disable-next-line
+  }, [])
+  
+  
   const [{ isHover, item }, drop] = useDrop({
     accept: ITEM_TYPES.INGREDIENT,
     drop: (item) => {
@@ -61,12 +75,15 @@ const BurgerConstructor = () => {
       item: monitor.getItem(),
     }),
   });
+  
 
   const handleOrderButtonClick = useCallback(() => {
+    dispatch(handleWaitingOrderNumber());
+    
     dispatch(handleGetUserData())
       .then(unwrapResult)
       .then(() => {
-        dispatch(handleOpenOrderDetailsModal({ selectedItems, selectedBun }))
+        dispatch(handleOpenOrderDetailsModal())
           .then(unwrapResult)
           .then(() => dispatch(deleteAllIngredients()))
           .catch(() => {});
@@ -164,6 +181,18 @@ const BurgerConstructor = () => {
                 : "Оформить заказ"}
             </MemoButton>
           </div>
+          {orderNumberError && (
+            <span
+              className={classNames(
+                styles.errorMessage,
+                "text",
+                "text_type_main-default",
+                'mt-1'
+              )}
+            >
+              Произошла ошибка при выполнении заказа
+            </span>
+          )}
         </>
       ) : (
         <div
