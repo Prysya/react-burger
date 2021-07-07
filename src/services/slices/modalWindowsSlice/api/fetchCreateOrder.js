@@ -1,10 +1,12 @@
 import { LOAD_STATUSES, MESSAGES } from "../../../../constants";
 import axios from "axios";
 
-export const fetchCreateOrder = (url) =>
-  async ({ selectedItems, selectedBun }, { getState }) => {
+export const fetchCreateOrder =
+  (url) =>
+  async (_, { getState }) => {
     const { orderNumberLoading } = getState().modalWindows;
-
+    const { selectedBun, selectedItems } = getState().items;
+    
     if (orderNumberLoading !== LOAD_STATUSES.PENDING) return;
 
     try {
@@ -13,12 +15,11 @@ export const fetchCreateOrder = (url) =>
         ingredients: [selectedBun._id, ...selectedIngredientsId],
       };
 
-      const { data } = await axios.post(
-        url,
-        body
-      );
+      const { data } = await axios.post(url, body);
 
-      const {order: { number }} = data;
+      const {
+        order: { number },
+      } = data;
 
       if (number && typeof number === "number") {
         return number;
