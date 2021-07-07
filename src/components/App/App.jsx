@@ -18,6 +18,7 @@ import {
 } from "../../pages";
 import { AppHeader, OrderDetailsModal, IngredientDetailsModal } from "../";
 import { checkRouteStatusAndReturnSelectedRoute } from "../../utils";
+import classnames from "classnames";
 
 const routesAndComponents = [
   { path: ROUTES.MAIN, Component: Main, exact: true },
@@ -62,7 +63,7 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <main className={styles.main}>
+      <main className={classnames(styles.main, 'pr-4', 'pl-4')}>
         <Switch>
           {isRedirectedFromMain && (
             <Route path={ROUTES.INGREDIENTS_WITH_ID} component={Main} exact />
