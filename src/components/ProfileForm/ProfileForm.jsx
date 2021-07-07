@@ -62,7 +62,7 @@ const ProfileForm = () => {
       newData.name = data.name;
     }
 
-    if (data.password.length > 7) {
+    if (data.password.length > 5) {
       newData.password = data.password;
     }
 
