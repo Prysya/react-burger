@@ -25,25 +25,23 @@ const Modal = ({ children, onClose, header = "", ...props }) => {
   }, []);
 
   return createPortal(
-    <>
-      <FadeAnim className={styles.modal}>
-        <div
-          className={`${styles.modalContainer} pt-15 pl-10 pr-10 ${
-            header === "" ? spacesWithoutHeader : spacesWithHeader
-          }`}
-          {...props}
-        >
-          <h2 className={`${styles.header} text text_type_main-large`}>
-            {header}
-            <span className={styles.closeIcon}>
-              <MemoCloseIcon type="primary" onClick={onClose} />
-            </span>
-          </h2>
-          {children}
-        </div>
-      </FadeAnim>
+    <div className={styles.modal}>
       <ModalOverlay onClick={onClose} />
-    </>,
+      <div
+        className={`${styles.modalContainer} pt-15 pl-10 pr-10 ${
+          header === "" ? spacesWithoutHeader : spacesWithHeader
+        }`}
+        {...props}
+      >
+        <h2 className={`${styles.header} text text_type_main-large`}>
+          {header}
+          <span className={styles.closeIcon}>
+            <MemoCloseIcon type="primary" onClick={onClose} />
+          </span>
+        </h2>
+        {children}
+      </div>
+    </div>,
     modalRoot
   );
 };
