@@ -1,8 +1,8 @@
-import React, {memo, useCallback, useEffect, useRef, useState} from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { scroller } from "react-scroll";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import styles from "./BurgerIngredients.module.css";
 
@@ -15,8 +15,8 @@ import {
   handleOpenIngredientDetailsModal,
   setCurrentIngredient,
 } from "../../services/slices";
-import {Loader} from "../Loader";
-import {LOAD_STATUSES, ROUTES} from "../../constants";
+import { Loader } from "../Loader";
+import { LOAD_STATUSES, ROUTES } from "../../constants";
 
 const MemoTab = memo(Tab);
 
@@ -24,7 +24,7 @@ const BurgerIngredients = () => {
   const dispatch = useDispatch();
 
   const history = useHistory();
-  
+
   const [current, setCurrent] = useState("buns");
 
   const {
@@ -36,14 +36,6 @@ const BurgerIngredients = () => {
     dispatch(getDataFromApi());
     //eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (data) {
-      const bun = data.find((item) => item.type === "bun");
-
-      bun && dispatch(handleBunSelection(bun));
-    }
-  }, [data, dispatch]);
 
   const containerRef = useRef(null);
   const bunsRef = useRef(null);
@@ -59,9 +51,9 @@ const BurgerIngredients = () => {
 
     dispatch(setCurrentIngredient(item));
     dispatch(handleOpenIngredientDetailsModal());
-    
-    history.replace({pathname: `${ROUTES.INGREDIENTS}/${item._id}`})
-    
+
+    history.replace({ pathname: `${ROUTES.INGREDIENTS}/${item._id}` });
+
     //eslint-disable-next-line
   }, []);
 
@@ -73,7 +65,7 @@ const BurgerIngredients = () => {
       containerId: "burgerIngredientsScrollableContainer",
       offset: -20,
     });
-  },[]);
+  }, []);
 
   const handleScroll = useCallback(() => {
     if (
@@ -96,12 +88,16 @@ const BurgerIngredients = () => {
       );
       const min = Math.min(bunDistance, sauceDistance, toppingsDistance);
       setCurrent(
-        min === bunDistance ? "buns" : min === sauceDistance ? "sauces" : "toppings"
+        min === bunDistance
+          ? "buns"
+          : min === sauceDistance
+          ? "sauces"
+          : "toppings"
       );
     }
   }, []);
 
-  if (dataLoading === LOAD_STATUSES.PENDING) return <Loader />
+  if (dataLoading === LOAD_STATUSES.PENDING) return <Loader />;
 
   return (
     <div className={`${styles.section} pt-10 pb-10`}>
@@ -136,43 +132,58 @@ const BurgerIngredients = () => {
         containerRef={containerRef}
         onScroll={handleScroll}
       >
-        <IngredientsContainerWithTitle title="Булки" name="buns" containerRef={bunsRef}>
-          {Array.isArray(data) && data
-            .filter((item) => item.type === "bun")
-            .map((item) => {
-              return (
+        <IngredientsContainerWithTitle
+          title="Булки"
+          name="buns"
+          containerRef={bunsRef}
+        >
+          {Array.isArray(data) &&
+            data
+              .filter((item) => item.type === "bun")
+              .map((item) => {
+                return (
+                  <IngredientCard
+                    handleIngredientClick={handleIngredientClick}
+                    count={selectedBun._id === item._id ? 2 : 0}
+                    item={item}
+                    key={item._id}
+                  />
+                );
+              })}
+        </IngredientsContainerWithTitle>
+        <IngredientsContainerWithTitle
+          title="Соусы"
+          name="sauces"
+          containerRef={saucesRef}
+        >
+          {Array.isArray(data) &&
+            data
+              .filter((item) => item.type === "sauce")
+              .map((item) => (
                 <IngredientCard
                   handleIngredientClick={handleIngredientClick}
-                  count={selectedBun._id === item._id ? 2 : 0}
+                  count={selectedItemsCount[item.name] || 0}
                   item={item}
                   key={item._id}
                 />
-              );
-            })}
+              ))}
         </IngredientsContainerWithTitle>
-        <IngredientsContainerWithTitle title="Соусы" name="sauces" containerRef={saucesRef}>
-          {Array.isArray(data) && data
-            .filter((item) => item.type === "sauce")
-            .map((item) => (
-              <IngredientCard
-                handleIngredientClick={handleIngredientClick}
-                count={selectedItemsCount[item.name] || 0}
-                item={item}
-                key={item._id}
-              />
-            ))}
-        </IngredientsContainerWithTitle>
-        <IngredientsContainerWithTitle title="Начинки" name="toppings" containerRef={toppingsRef}>
-          {Array.isArray(data) && data
-            .filter((item) => item.type === "main")
-            .map((item) => (
-              <IngredientCard
-                handleIngredientClick={handleIngredientClick}
-                count={selectedItemsCount[item.name] || 0}
-                item={item}
-                key={item._id}
-              />
-            ))}
+        <IngredientsContainerWithTitle
+          title="Начинки"
+          name="toppings"
+          containerRef={toppingsRef}
+        >
+          {Array.isArray(data) &&
+            data
+              .filter((item) => item.type === "main")
+              .map((item) => (
+                <IngredientCard
+                  handleIngredientClick={handleIngredientClick}
+                  count={selectedItemsCount[item.name] || 0}
+                  item={item}
+                  key={item._id}
+                />
+              ))}
         </IngredientsContainerWithTitle>
       </ScrollableContainer>
     </div>
