@@ -143,7 +143,7 @@ const BurgerIngredients = () => {
               return (
                 <IngredientCard
                   handleIngredientClick={handleIngredientClick}
-                  count={selectedBun._id === item._id ? 1 : 0}
+                  count={selectedBun._id === item._id ? 2 : 0}
                   item={item}
                   key={item._id}
                 />
