@@ -52,8 +52,7 @@ const ProfileForm = () => {
 
   const onSubmit = (data) => {
     const newData = {};
-    console.log(data);
-
+    
     if (data.email !== userEmail) {
       newData.email = data.email;
     }
