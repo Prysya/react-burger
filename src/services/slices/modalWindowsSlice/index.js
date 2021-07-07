@@ -11,8 +11,9 @@ const initialState = {
   orderNumber: null,
   orderNumberLoading: LOAD_STATUSES.IDLE,
   orderNumberError: null,
-  
-  isRedirectedFromMain: false
+  orderNumberWaitAuth: false,
+
+  isRedirectedFromMain: false,
 };
 
 const modalWindowsSlice = createSlice({
@@ -30,6 +31,9 @@ const modalWindowsSlice = createSlice({
     handleCloseOrderDetailsModal: (state) => {
       state.isOrderDetailsModalIsOpen = false;
     },
+    handleWaitingOrderNumber: (state) => {
+      state.orderNumberWaitAuth = true;
+    },
   },
   extraReducers: {
     [handleOpenOrderDetailsModal.pending]: (state) => {
@@ -38,6 +42,7 @@ const modalWindowsSlice = createSlice({
         state.isOrderButtonDisabled = true;
         state.orderNumber = null;
         state.orderNumberError = null;
+        state.orderNumberWaitAuth = true;
       }
     },
     [handleOpenOrderDetailsModal.fulfilled]: (state, action) => {
@@ -46,13 +51,15 @@ const modalWindowsSlice = createSlice({
         state.orderNumber = action.payload;
         state.isOrderButtonDisabled = false;
         state.isOrderDetailsModalIsOpen = true;
+        state.orderNumberWaitAuth = false;
       }
     },
     [handleOpenOrderDetailsModal.rejected]: (state, action) => {
       if (state.orderNumberLoading === LOAD_STATUSES.PENDING) {
         state.orderNumberLoading = LOAD_STATUSES.IDLE;
-        state.dataError = action.error;
+        state.orderNumberError = action.error;
         state.isOrderButtonDisabled = false;
+        state.orderNumberWaitAuth = false;
       }
     },
   },
@@ -63,5 +70,6 @@ export const {
   handleOpenIngredientDetailsModal,
   handleCloseIngredientDetailsModal,
   handleCloseOrderDetailsModal,
+  handleWaitingOrderNumber,
 } = modalWindowsSlice.actions;
 export default modalWindowsSlice.reducer;
