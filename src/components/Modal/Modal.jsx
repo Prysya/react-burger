@@ -6,7 +6,6 @@ import styles from "./Modal.module.css";
 
 import { ModalOverlay } from "../ModalOverlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { FadeAnim } from "../../uikit";
 
 const MemoCloseIcon = memo(CloseIcon);
 
