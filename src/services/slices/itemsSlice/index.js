@@ -48,6 +48,7 @@ const itemsSlice = createSlice({
     deleteAllIngredients: (state) => {
       state.selectedItems = [];
       state.selectedItemsCount = {};
+      state.selectedBun = {};
     },
     handleItemMove: (state, action) => {
       const dragItem = state.selectedItems[action.payload.dragIndex];
