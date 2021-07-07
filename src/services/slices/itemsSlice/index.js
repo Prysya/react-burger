@@ -29,9 +29,11 @@ const itemsSlice = createSlice({
       state.currentIngredient = action.payload;
     },
     calculateFullPrice: (state) => {
+      const selectedBun = state.selectedBun?.price || 0;
+      
       state.fullPrice =
         state.selectedItems.reduce((acc, item) => acc + item.price, 0) +
-        state.selectedBun.price * 2;
+        selectedBun * 2;
     },
     deleteIngredient: (state, action) => {
       state.selectedItems = [...state.selectedItems].filter(
