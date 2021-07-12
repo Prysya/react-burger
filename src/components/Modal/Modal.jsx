@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 
 import styles from "./Modal.module.css";
+
 import { ModalOverlay } from "../ModalOverlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -24,6 +25,7 @@ const Modal = ({ children, onClose, header = "", ...props }) => {
 
   return createPortal(
     <div className={styles.modal}>
+      <ModalOverlay onClick={onClose} />
       <div
         className={`${styles.modalContainer} pt-15 pl-10 pr-10 ${
           header === "" ? spacesWithoutHeader : spacesWithHeader
@@ -38,7 +40,6 @@ const Modal = ({ children, onClose, header = "", ...props }) => {
         </h2>
         {children}
       </div>
-      <ModalOverlay onClick={onClose} />
     </div>,
     modalRoot
   );

@@ -1,82 +1,91 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Route, Switch } from "react-router-dom";
+
 import styles from "./App.module.css";
-import { AppHeader } from "../AppHeader";
-import { BurgerConstructor } from "../BurgerConstructor";
-import { BurgerIngredients } from "../BurgerIngredients";
-import { Modal } from "../Modal";
-import { OrderDetails } from "../OrderDetails";
-import { IngredientDetails } from "../IngredientDetails";
-import { Loader } from "../Loader";
-import { LOAD_STATUSES } from "../../constants";
-import { useDispatch, useSelector } from "react-redux";
+
+import { ROUTE_STATUSES, ROUTES } from "../../constants";
 import {
-  calculateFullPrice,
-  getDataFromApi,
-  handleBunSelection,
-  handleCloseIngredientDetailsModal,
-  handleCloseOrderDetailsModal,
-} from "../../services/reducers";
+  Error404,
+  Main,
+  Register,
+  Login,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
+  Logout,
+  Ingredient,
+} from "../../pages";
+import { AppHeader, OrderDetailsModal, IngredientDetailsModal } from "../";
+import { checkRouteStatusAndReturnSelectedRoute } from "../../utils";
+import classnames from "classnames";
+
+const routesAndComponents = [
+  { path: ROUTES.MAIN, Component: Main, exact: true },
+  {
+    path: ROUTES.LOGIN,
+    Component: Login,
+    status: ROUTE_STATUSES.HIDDEN,
+  },
+  {
+    path: ROUTES.REGISTER,
+    Component: Register,
+    status: ROUTE_STATUSES.HIDDEN,
+  },
+  {
+    path: ROUTES.FORGOT_PASSWORD,
+    Component: ForgotPassword,
+    status: ROUTE_STATUSES.HIDDEN,
+  },
+  {
+    path: ROUTES.RESET_PASSWORD,
+    Component: ResetPassword,
+    exact: true,
+    status: ROUTE_STATUSES.HIDDEN,
+  },
+  {
+    path: ROUTES.RESET_PASSWORD_WITH_TOKEN,
+    Component: ResetPassword,
+    status: ROUTE_STATUSES.HIDDEN,
+  },
+  {
+    path: ROUTES.PROFILE,
+    Component: Profile,
+    status: ROUTE_STATUSES.PROTECTED,
+  },
+  { path: ROUTES.LOGOUT, Component: Logout, status: ROUTE_STATUSES.PROTECTED },
+  { path: ROUTES.INGREDIENTS_WITH_ID, Component: Ingredient },
+];
 
 const App = () => {
-  const {
-    data: { dataLoading, data },
-    items: { selectedBun, selectedItems, currentIngredient },
-    modalWindows: {
-      isIngredientDetailsModalIsOpen,
-      isOrderDetailsModalIsOpen,
-      orderNumber,
-    },
-  } = useSelector(({ data, items, modalWindows }) => ({
-    data,
-    items,
-    modalWindows,
-  }));
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getDataFromApi());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (data) {
-      const bun = data.find((item) => item.type === "bun");
-
-      bun && dispatch(handleBunSelection(bun));
-    }
-  }, [data, dispatch]);
-
-  useEffect(() => {
-    dispatch(calculateFullPrice());
-  }, [dispatch, selectedBun, selectedItems]);
+  const { isRedirectedFromMain } = useSelector((state) => state.modalWindows);
 
   return (
     <div className={styles.app}>
       <AppHeader />
+      <main className={classnames(styles.main, 'pr-4', 'pl-4')}>
+        <Switch>
+          {isRedirectedFromMain && (
+            <Route path={ROUTES.INGREDIENTS_WITH_ID} component={Main} exact />
+          )}
 
-      <main className={styles.main}>
-        {dataLoading === LOAD_STATUSES.pending ? (
-          <Loader />
-        ) : (
-          <BurgerIngredients />
-        )}
-        {Object.keys(selectedBun).length !== 0 && <BurgerConstructor />}
+          {routesAndComponents.map(({ path, Component, status, ...props }) => {
+            const SelectedRoute =
+              checkRouteStatusAndReturnSelectedRoute(status);
 
-        {isOrderDetailsModalIsOpen && (
-          <Modal onClose={() => dispatch(handleCloseOrderDetailsModal())}>
-            <OrderDetails orderNumber={orderNumber} />
-          </Modal>
-        )}
+            return (
+              <SelectedRoute path={path} key={path} {...props}>
+                <Component />
+              </SelectedRoute>
+            );
+          })}
 
-        {isIngredientDetailsModalIsOpen && (
-          <Modal
-            onClose={() => dispatch(handleCloseIngredientDetailsModal())}
-            header="Детали ингридиента"
-          >
-            <IngredientDetails currentIngredient={currentIngredient} />
-          </Modal>
-        )}
+          <Route path="*" component={Error404} />
+        </Switch>
       </main>
+
+      <OrderDetailsModal />
+      <IngredientDetailsModal />
     </div>
   );
 };

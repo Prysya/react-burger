@@ -1,34 +1,70 @@
-import React, {memo, useCallback, useMemo} from "react";
-import { ScrollableContainer } from "../UI";
-import { BurgerElement } from "./";
+import React, { memo, useCallback, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
+import classnames from "classnames";
 
 import styles from "./BurgerConstructor.module.css";
+
+import { ScrollableContainer } from "../../uikit";
+import { BurgerElement } from "./";
+
 import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
+
 import {
+  calculateFullPrice,
   deleteAllIngredients,
   handleBunSelection,
+  handleGetUserData,
   handleItemAddition,
-  handleOpenOrderDetailsModal,
-} from "../../services/reducers";
-import classnames from "classnames";
-import { useDrop } from "react-dnd";
-import { ITEM_TYPES } from "../../constants";
+  handleOpenOrderDetailsModal, handleWaitingOrderNumber,
+} from "../../services/slices";
+
+import { ITEM_TYPES, LOAD_STATUSES, ROUTES } from "../../constants";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useHistory } from "react-router-dom";
+import classNames from "classnames";
 
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoButton = memo(Button);
 
 const BurgerConstructor = () => {
-  const {
-    items: { selectedBun, selectedItems, fullPrice },
-    modalWindows: { isOrderButtonDisabled },
-  } = useSelector(({ items, modalWindows }) => ({ items, modalWindows }));
+  const dispatch = useDispatch();
 
+  const history = useHistory();
+
+  const {
+    auth: {isAuthenticated},
+    data: { dataLoading },
+    items: { selectedBun, selectedItems, fullPrice },
+    modalWindows: { isOrderButtonDisabled, orderNumberError, orderNumberWaitAuth },
+  } = useSelector(({ items, modalWindows, data, auth }) => ({
+    items,
+    modalWindows,
+    data,
+    auth
+  }));
+
+  useEffect(() => {
+    dispatch(calculateFullPrice());
+  }, [dispatch, selectedBun, selectedItems]);
+  
+  useEffect(() => {
+    if (isAuthenticated && orderNumberWaitAuth) {
+      dispatch(handleOpenOrderDetailsModal())
+        .then(unwrapResult)
+        .then(() => dispatch(deleteAllIngredients()))
+        .catch(() => {});
+    }
+    
+    //eslint-disable-next-line
+  }, [])
+  
+  
   const [{ isHover, item }, drop] = useDrop({
-    accept: ITEM_TYPES.ingredient,
+    accept: ITEM_TYPES.INGREDIENT,
     drop: (item) => {
       return item.type === "bun"
         ? dispatch(handleBunSelection(item))
@@ -39,25 +75,38 @@ const BurgerConstructor = () => {
       item: monitor.getItem(),
     }),
   });
-
-  const dispatch = useDispatch();
+  
 
   const handleOrderButtonClick = useCallback(() => {
-    dispatch(handleOpenOrderDetailsModal({ selectedItems, selectedBun }))
+    dispatch(handleWaitingOrderNumber());
+    
+    dispatch(handleGetUserData())
+      .then(unwrapResult)
       .then(() => {
-        dispatch(deleteAllIngredients());
+        dispatch(handleOpenOrderDetailsModal())
+          .then(unwrapResult)
+          .then(() => dispatch(deleteAllIngredients()))
+          .catch(() => {});
       })
-      .catch((err) => console.error(err));
+      .catch(() => {
+        history.replace({ pathname: ROUTES.LOGIN });
+      });
 
     //eslint-disable-next-line
   }, [dispatch]);
 
-  const hoveredClass = useMemo(() => selectedItems.length === 0
-    ? styles.hoveredElements_empty
-    : styles.hoveredElements, [selectedItems])
+  const hoveredClass = useMemo(
+    () =>
+      selectedItems.length === 0
+        ? styles.hoveredElements_empty
+        : styles.hoveredElements,
+    [selectedItems]
+  );
+
+  if (dataLoading === LOAD_STATUSES.PENDING) return null;
 
   return (
-    <section
+    <div
       className={classnames(
         styles.section,
         isHover && item.type === "bun" && styles.hoveredBun,
@@ -66,55 +115,100 @@ const BurgerConstructor = () => {
       )}
       ref={drop}
     >
-      <BurgerElement
-        type="top"
-        isLocked={true}
-        image={selectedBun.image}
-        name={`${selectedBun.name} (верх)`}
-        price={selectedBun.price}
-      />
-
-      <ScrollableContainer
-        className={classnames(
-          isHover && item.type !== "bun" && hoveredClass
-        )}
-      >
-        <ul className={styles.burgerItemsContainer}>
-          {selectedItems.map(({ name, price, image, _id, randomId }, index) => (
+      {Object.keys(selectedBun).length > 0 || selectedItems.length > 0 ? (
+        <>
+          {Object.keys(selectedBun).length > 0 && (
             <BurgerElement
-              name={name}
-              price={price}
-              image={image}
-              nodeType="li"
-              index={index}
-              key={randomId}
-              id={_id}
+              type="top"
+              isLocked={true}
+              image={selectedBun.image}
+              name={`${selectedBun.name} (верх)`}
+              price={selectedBun.price}
             />
-          ))}
-        </ul>
-      </ScrollableContainer>
+          )}
 
-      <BurgerElement
-        type="bottom"
-        isLocked={true}
-        image={selectedBun.image}
-        name={`${selectedBun.name} (низ)`}
-        price={selectedBun.price}
-      />
-      <div className={`${styles.footer} mt-10`}>
-        <span className="text text_type_digits-medium">
-          {fullPrice} <MemoCurrencyIcon type="primary" />
-        </span>
-        <MemoButton
-          type="primary"
-          size="medium"
-          onClick={isOrderButtonDisabled ? undefined : handleOrderButtonClick}
+          <ScrollableContainer
+            className={classnames(
+              isHover &&
+                (item.type !== "bun" ||
+                  Object.keys(selectedBun).length === 0) &&
+                hoveredClass
+            )}
+          >
+            <ul className={styles.burgerItemsContainer}>
+              {selectedItems.map(
+                ({ name, price, image, _id, randomId }, index) => (
+                  <BurgerElement
+                    name={name}
+                    price={price}
+                    image={image}
+                    nodeType="li"
+                    index={index}
+                    key={randomId}
+                    id={_id}
+                  />
+                )
+              )}
+            </ul>
+          </ScrollableContainer>
+
+          {Object.keys(selectedBun).length > 0 && (
+            <BurgerElement
+              type="bottom"
+              isLocked={true}
+              image={selectedBun.image}
+              name={`${selectedBun.name} (низ)`}
+              price={selectedBun.price}
+            />
+          )}
+          <div className={`${styles.footer} mt-10`}>
+            <span className="text text_type_digits-medium">
+              {fullPrice} <MemoCurrencyIcon type="primary" />
+            </span>
+            <MemoButton
+              type="primary"
+              size="medium"
+              onClick={
+                Object.keys(selectedBun).length === 0 || isOrderButtonDisabled
+                  ? undefined
+                  : handleOrderButtonClick
+              }
+            >
+              {Object.keys(selectedBun).length === 0
+                ? "Необходимо выбрать булочку"
+                : isOrderButtonDisabled
+                ? "Заказ оформляется..."
+                : "Оформить заказ"}
+            </MemoButton>
+          </div>
+          {orderNumberError && (
+            <span
+              className={classNames(
+                styles.errorMessage,
+                "text",
+                "text_type_main-default",
+                'mt-1'
+              )}
+            >
+              Произошла ошибка при выполнении заказа
+            </span>
+          )}
+        </>
+      ) : (
+        <div
+          className={classNames(
+            styles.emptyContainer,
+            isHover && styles.emptyContainerHovered,
+            "p-1"
+          )}
         >
-          {isOrderButtonDisabled ? "Заказ оформляется..." : "Оформить заказ"}
-        </MemoButton>
-      </div>
-    </section>
+          <h2 className="text text_type_main-medium">
+            Выберите или перенесите сюда булочку, а затем ингредиенты
+          </h2>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default BurgerConstructor;
+export default memo(BurgerConstructor);

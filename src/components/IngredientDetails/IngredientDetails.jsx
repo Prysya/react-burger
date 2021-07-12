@@ -20,7 +20,7 @@ const IngredientDetails = ({
     { value: fat || 0, name: "Жиры", unit: "г" },
     { value: carbohydrates || 0, name: "Углеводы", unit: "г" },
   ];
-
+  
   return (
     <>
       <img className="mb-4" src={image_large} alt={name} />
@@ -44,7 +44,7 @@ IngredientDetails.propTypes = {
     fat: PropTypes.number.isRequired,
     proteins: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-  }),
+  }).isRequired,
 };
 
 export default IngredientDetails;

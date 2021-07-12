@@ -14,4 +14,5 @@
 
 .leftTabsContainer {
   display: flex;
+  gap: calc(var(--offset-base-size) * 2)
 }

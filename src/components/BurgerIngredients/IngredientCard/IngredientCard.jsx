@@ -15,7 +15,7 @@ const IngredientCard = ({ count, handleIngredientClick, item }) => {
   const { name, image, price } = item;
   const [{ opacity }, drag, dragPreview] = useDrag({
     item,
-    type: ITEM_TYPES.ingredient,
+    type: ITEM_TYPES.INGREDIENT,
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.4 : 1,
     }),

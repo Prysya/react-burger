@@ -1,6 +1,4 @@
-const LOAD_STATUSES = {
-  pending: 'pending',
-  idle: 'idle'
+export const LOAD_STATUSES = {
+  PENDING: 'pending',
+  IDLE: 'idle'
 };
-
-export default LOAD_STATUSES;

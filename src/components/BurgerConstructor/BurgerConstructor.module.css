@@ -41,3 +41,26 @@
   box-shadow: inset 0 0 8px 4px rgba(51, 51, 255, 0.25), 0 0 4px 4px rgba(51, 51, 255, 0.25);
   transition: all 200ms ease-in;
 }
+
+.emptyContainer {
+  width: 100%;
+  height: 100%;
+  border: 1px dashed white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  transition: opacity, color, border 200ms ease-in;
+}
+
+.emptyContainerHovered {
+  opacity: .4;
+  color: var(--colors-interface-success);
+  border: 1px dashed var(--colors-interface-success);
+}
+
+.errorMessage {
+  color: var(--colors-interface-error);
+  text-align: center;
+}

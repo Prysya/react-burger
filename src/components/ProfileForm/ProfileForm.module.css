@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--offset-base-size) * 6);
+}
+
+.error {
+  color: var(--colors-interface-error);
+  text-align: center;
+}
+
+.success {
+  color: var(--colors-interface-success);
+  text-align: center;
+}
+
+.buttonsContainer {
+  display: flex;
+}
