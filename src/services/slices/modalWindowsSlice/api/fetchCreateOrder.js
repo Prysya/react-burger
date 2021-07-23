@@ -1,5 +1,6 @@
 import { LOAD_STATUSES, MESSAGES } from "../../../../constants";
 import axios from "axios";
+import {getCookie} from "../../../../utils";
 
 export const fetchCreateOrder =
   (url) =>
@@ -15,7 +16,11 @@ export const fetchCreateOrder =
         ingredients: [selectedBun._id, ...selectedIngredientsId],
       };
 
-      const { data } = await axios.post(url, body);
+      const {data}  = await axios.post(url, body, {
+        headers: {
+          Authorization: 'Bearer ' + getCookie('token'),
+        }
+      });
 
       const {
         order: { number },

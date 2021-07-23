@@ -5,7 +5,8 @@ export const MESSAGES = {
     RES_ERROR: 'Произошла ошибка при обработке запроса',
     TOKEN_ERROR: 'Ошибка кода из письма',
     ACCESS_TOKEN_IS_UNDEFINED: 'Access token просрочен или отсутствует',
-    REFRESH_TOKEN_IS_UNDEFINED: 'Refresh token просрочен или отсутствует'
+    REFRESH_TOKEN_IS_UNDEFINED: 'Refresh token просрочен или отсутствует',
+    DATA_IS_INCORRECT: 'E-mail или пароль введены неверно, исправьте и попробуйте снова.'
   },
   VALIDATION_ERRORS: {
     IS_STRING: 'Значение должно быть строкой',

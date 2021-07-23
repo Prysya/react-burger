@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { scroller } from "react-scroll";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import styles from "./BurgerIngredients.module.css";
 
@@ -25,6 +25,8 @@ const BurgerIngredients = () => {
 
   const history = useHistory();
 
+  const location = useLocation();
+
   const [current, setCurrent] = useState("buns");
 
   const {
@@ -33,7 +35,9 @@ const BurgerIngredients = () => {
   } = useSelector(({ data, items }) => ({ data, items }));
 
   useEffect(() => {
-    dispatch(getDataFromApi());
+    if (data.length === 0) {
+      dispatch(getDataFromApi());
+    }
     //eslint-disable-next-line
   }, []);
 
@@ -52,7 +56,12 @@ const BurgerIngredients = () => {
     dispatch(setCurrentIngredient(item));
     dispatch(handleOpenIngredientDetailsModal());
 
-    history.replace({ pathname: `${ROUTES.INGREDIENTS}/${item._id}` });
+    history.push({
+      pathname: `${ROUTES.INGREDIENTS}/${item._id}`,
+      state: {
+        background: location,
+      },
+    });
 
     //eslint-disable-next-line
   }, []);

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 
 import { handleGetUserData } from "../../services/slices";
-import { LOAD_STATUSES } from "../../constants";
+import { LOAD_STATUSES, ROUTES } from "../../constants";
 import { Loader } from "../Loader";
 
 const HiddenForAuthUsersRoute = ({ children, ...props }) => {
@@ -29,7 +29,7 @@ const HiddenForAuthUsersRoute = ({ children, ...props }) => {
       {...props}
       render={({ location }) =>
         isAuthenticated ? (
-          <Redirect to={location.state?.from || "/"} />
+          <Redirect to={location.state?.from || ROUTES.PROFILE} />
         ) : (
           children
         )

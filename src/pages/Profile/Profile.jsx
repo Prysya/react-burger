@@ -1,11 +1,13 @@
 import React from "react";
+import { Route, Switch, useLocation } from "react-router-dom";
+import classNames from "classnames";
 
 import styles from "./Profile.module.css";
-import { ROUTES } from "../../constants";
+
 import { NavButton, ProfileForm } from "../../components";
-import classNames from "classnames";
 import { FadeAnim } from "../../uikit";
-import { Route, Switch } from "react-router-dom";
+import { UserOrders } from "../../components/UserOrders";
+import { ROUTES } from "../../constants";
 
 const profileLinks = [
   { path: ROUTES.PROFILE, text: "Профиль" },
@@ -14,27 +16,32 @@ const profileLinks = [
 ];
 
 const Profile = () => {
+  const { pathname } = useLocation();
+
   return (
-    <FadeAnim
-      wrapperTag="section"
-      className={classNames(styles.profileContainer, "pl-5", "pr-5")}
-    >
-      <div className={styles.linksContainer}>
+    <section className={classNames(styles.profileContainer, "p-5")}>
+      <FadeAnim className={styles.linksContainer}>
         {profileLinks.map(({ path, text }) => (
           <NavButton to={path} text={text} textSize="medium" key={path} />
         ))}
 
         <p className="text text_type_main-default text_color_inactive mt-20 ml-5">
-          В этом разделе вы можете изменить свои персональные данные
+          {pathname.includes("orders")
+            ? "В этом разделе вы можете посмотреть свою историю заказов"
+            : "В этом разделе вы можете изменить свои персональные данные"}
         </p>
-      </div>
+      </FadeAnim>
 
       <Switch>
         <Route path={ROUTES.PROFILE} exact>
           <ProfileForm />
         </Route>
+
+        <Route path={ROUTES.ORDERS} exact>
+          <UserOrders />
+        </Route>
       </Switch>
-    </FadeAnim>
+    </section>
   );
 };
 

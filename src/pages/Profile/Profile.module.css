@@ -7,6 +7,6 @@
 }
 
 .linksContainer {
-  max-width: 340px;
+  min-width: 340px;
+  max-width: 350px;
 }
-

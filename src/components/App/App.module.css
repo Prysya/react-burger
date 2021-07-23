@@ -11,3 +11,10 @@
   margin: 0 auto;
   position: relative;
 }
+/**
+* FontFamily Fix for small size
+**/
+
+.app :global(.text_type_main-small) {
+  font-family: 'Jet Brains Mono', Arial, serif;
+}

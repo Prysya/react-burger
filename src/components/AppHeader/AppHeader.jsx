@@ -1,18 +1,21 @@
 import React, { memo } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   BurgerIcon,
   ListIcon,
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+
 import styles from "./AppHeader.module.css";
+
 import { NavButton } from "../";
 import { ROUTES } from "../../constants";
-import {useSelector} from "react-redux";
 
 const AppHeader = () => {
-  const {isAuthenticated} = useSelector(state => state.auth)
-  
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <header className={`${styles.header} p-4`}>
       <nav className={styles.nav}>
@@ -29,7 +32,9 @@ const AppHeader = () => {
           />
         </div>
 
-        <Logo />
+        <Link to={ROUTES.MAIN}>
+          <Logo />
+        </Link>
 
         <NavButton
           IconComponent={ProfileIcon}

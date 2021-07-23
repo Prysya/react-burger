@@ -11,7 +11,7 @@ const MemoCloseIcon = memo(CloseIcon);
 
 const modalRoot = document.getElementById("react-modals");
 
-const Modal = ({ children, onClose, header = "", ...props }) => {
+const Modal = ({ children, onClose, header = "", headerType = 'main', headerSize = 'large', ...props }) => {
   const spacesWithHeader = "pb-15";
   const spacesWithoutHeader = "pb-30";
 
@@ -32,7 +32,7 @@ const Modal = ({ children, onClose, header = "", ...props }) => {
         }`}
         {...props}
       >
-        <h2 className={`${styles.header} text text_type_main-large`}>
+        <h2 className={`${styles.header} text text_type_${headerType}-${headerSize}`}>
           {header}
           <span className={styles.closeIcon}>
             <MemoCloseIcon type="primary" onClick={onClose} />
@@ -49,6 +49,8 @@ Modal.propTypes = {
   children: PropTypes.any.isRequired,
   onClose: PropTypes.func.isRequired,
   header: PropTypes.string,
+  headerType: PropTypes.oneOf(['main', 'digits']),
+  headerSize: PropTypes.oneOf(['large', 'default', 'medium', "small"]),
 };
 
 export default Modal;

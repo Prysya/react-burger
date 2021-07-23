@@ -2,6 +2,7 @@ import React, { memo, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import classnames from "classnames";
+import classNames from "classnames";
 
 import styles from "./BurgerConstructor.module.css";
 
@@ -19,13 +20,13 @@ import {
   handleBunSelection,
   handleGetUserData,
   handleItemAddition,
-  handleOpenOrderDetailsModal, handleWaitingOrderNumber,
+  handleOpenOrderDetailsModal,
+  handleWaitingOrderNumber,
 } from "../../services/slices";
 
 import { ITEM_TYPES, LOAD_STATUSES, ROUTES } from "../../constants";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useHistory } from "react-router-dom";
-import classNames from "classnames";
 
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoButton = memo(Button);
@@ -36,21 +37,25 @@ const BurgerConstructor = () => {
   const history = useHistory();
 
   const {
-    auth: {isAuthenticated},
+    auth: { isAuthenticated },
     data: { dataLoading },
     items: { selectedBun, selectedItems, fullPrice },
-    modalWindows: { isOrderButtonDisabled, orderNumberError, orderNumberWaitAuth },
+    modalWindows: {
+      isOrderButtonDisabled,
+      orderNumberError,
+      orderNumberWaitAuth,
+    },
   } = useSelector(({ items, modalWindows, data, auth }) => ({
     items,
     modalWindows,
     data,
-    auth
+    auth,
   }));
 
   useEffect(() => {
     dispatch(calculateFullPrice());
   }, [dispatch, selectedBun, selectedItems]);
-  
+
   useEffect(() => {
     if (isAuthenticated && orderNumberWaitAuth) {
       dispatch(handleOpenOrderDetailsModal())
@@ -58,11 +63,10 @@ const BurgerConstructor = () => {
         .then(() => dispatch(deleteAllIngredients()))
         .catch(() => {});
     }
-    
+
     //eslint-disable-next-line
-  }, [])
-  
-  
+  }, []);
+
   const [{ isHover, item }, drop] = useDrop({
     accept: ITEM_TYPES.INGREDIENT,
     drop: (item) => {
@@ -75,11 +79,10 @@ const BurgerConstructor = () => {
       item: monitor.getItem(),
     }),
   });
-  
 
   const handleOrderButtonClick = useCallback(() => {
     dispatch(handleWaitingOrderNumber());
-    
+
     dispatch(handleGetUserData())
       .then(unwrapResult)
       .then(() => {
@@ -93,7 +96,7 @@ const BurgerConstructor = () => {
       });
 
     //eslint-disable-next-line
-  }, [dispatch]);
+  }, [dispatch, selectedBun, selectedItems]);
 
   const hoveredClass = useMemo(
     () =>
@@ -187,7 +190,7 @@ const BurgerConstructor = () => {
                 styles.errorMessage,
                 "text",
                 "text_type_main-default",
-                'mt-1'
+                "mt-1"
               )}
             >
               Произошла ошибка при выполнении заказа

@@ -1,0 +1,58 @@
+.container {
+  max-width: 640px;
+  width: 100%;
+}
+
+.orderNumber {
+  text-align: center;
+}
+
+.itemsContainer {
+  max-height: 350px;
+  height: 100%;
+}
+
+.orderStatusPending {
+  color: var(--colors-interface-success);
+}
+
+.orderStatusError {
+  color: var(--colors-interface-error);
+}
+
+.orderStatus {
+  font-family: "Jet Brains Mono", Arial, serif;
+}
+
+.flexContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: calc(var(--offset-base-size) * 6);
+  padding-right: 10px;
+}
+
+.flexContainer:last-child {
+  margin-bottom: 0;
+}
+
+.itemInfoContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.name {
+  max-width: 250px;
+}
+
+.icon {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: 2px solid #801ab3;
+  background-color: black;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

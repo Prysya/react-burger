@@ -7,5 +7,7 @@ export const API_URL = {
   LOGIN: 'https://norma.nomoreparties.space/api/auth/login',
   LOGOUT: 'https://norma.nomoreparties.space/api/auth/logout',
   TOKEN_RESET: 'https://norma.nomoreparties.space/api/auth/token',
-  USER_DATA: 'https://norma.nomoreparties.space/api/auth/user'
+  USER_DATA: 'https://norma.nomoreparties.space/api/auth/user',
+  WS_ALL_ORDERS: 'wss://norma.nomoreparties.space/orders/all',
+  WS_USER_ORDERS: 'wss://norma.nomoreparties.space/orders'
 };

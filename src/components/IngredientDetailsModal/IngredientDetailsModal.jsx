@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import { Modal } from "../Modal";
 import { handleCloseIngredientDetailsModal } from "../../services/slices";
 import { IngredientDetails } from "../IngredientDetails";
-import { ROUTES } from "../../constants";
 
 const IngredientDetailsModal = () => {
   const dispatch = useDispatch();
@@ -24,7 +23,7 @@ const IngredientDetailsModal = () => {
 
   const handleClose = () => {
     dispatch(handleCloseIngredientDetailsModal());
-    history.replace({ pathname: ROUTES.MAIN });
+    history.goBack();
   };
 
   return (
