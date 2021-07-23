@@ -7,6 +7,8 @@ import ResetPassword from "./ResetPassword/ResetPassword";
 import Profile from "./Profile/Profile";
 import Logout from './Logout/Logout';
 import Ingredient from "./Ingredient/Ingredient";
+import Feed from "./Feed/Feed";
+import Order from "./Order/Order";
 
 export {
   Main,
@@ -17,5 +19,7 @@ export {
   ResetPassword,
   Profile,
   Logout,
-  Ingredient
+  Ingredient,
+  Feed,
+  Order
 };
