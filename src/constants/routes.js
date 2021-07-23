@@ -6,10 +6,10 @@ export const ROUTES = {
   RESET_PASSWORD: "/reset-password",
   RESET_PASSWORD_WITH_TOKEN: "/reset-password/:token",
   FEED: "/feed",
-  FEED_WITH_ID: "/feed/:id",
+  FEED_WITH_ID: "/feed/:feedId",
   PROFILE: "/profile",
   ORDERS: "/profile/orders",
-  ORDERS_WITH_ID: "/profile/orders/:id",
+  ORDERS_WITH_ID: "/profile/orders/:feedId",
   INGREDIENTS: "/ingredients",
   INGREDIENTS_WITH_ID: "/ingredients/:ingredientId",
   LOGOUT: '/logout'
