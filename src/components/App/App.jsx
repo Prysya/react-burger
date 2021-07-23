@@ -90,9 +90,9 @@ const App = () => {
     //eslint-disable-next-line
   }, []);
 
-  let location = useLocation();
+  const location = useLocation();
 
-  let background = location?.state?.background;
+  const background = location?.state?.background;
 
   return (
     <div className={styles.app}>
