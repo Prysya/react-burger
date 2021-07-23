@@ -33,7 +33,9 @@ const BurgerIngredients = () => {
   } = useSelector(({ data, items }) => ({ data, items }));
 
   useEffect(() => {
-    dispatch(getDataFromApi());
+    if (data.length === 0) {
+      dispatch(getDataFromApi());
+    }
     //eslint-disable-next-line
   }, []);
 

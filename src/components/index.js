@@ -15,3 +15,8 @@ export * from "./ProtectedRoute";
 export * from "./HiddenForAuthUsersRoute";
 export * from "./ProfileForm";
 export * from "./ControlledInput";
+export * from "./CardOrder";
+export * from "./FeedIngredients";
+export * from "./FeedNumbersTablet";
+export * from './FeedInfo';
+export * from './FeedInfoModal';

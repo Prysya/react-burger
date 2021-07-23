@@ -15,13 +15,17 @@ import {
   Profile,
   Logout,
   Ingredient,
+  Order,
+  Feed,
 } from "../../pages";
 import { AppHeader, OrderDetailsModal, IngredientDetailsModal } from "../";
 import { checkRouteStatusAndReturnSelectedRoute } from "../../utils";
 import classnames from "classnames";
+import FeedInfoModal from "../FeedInfoModal/FeedInfoModal";
 
 const routesAndComponents = [
   { path: ROUTES.MAIN, Component: Main, exact: true },
+  { path: ROUTES.FEED, Component: Feed, exact: true },
   {
     path: ROUTES.LOGIN,
     Component: Login,
@@ -52,21 +56,39 @@ const routesAndComponents = [
     path: ROUTES.PROFILE,
     Component: Profile,
     status: ROUTE_STATUSES.PROTECTED,
+    exact: true
+  },
+  {
+    path: ROUTES.ORDERS,
+    Component: Profile,
+    status: ROUTE_STATUSES.PROTECTED,
+    exact: true
   },
   { path: ROUTES.LOGOUT, Component: Logout, status: ROUTE_STATUSES.PROTECTED },
   { path: ROUTES.INGREDIENTS_WITH_ID, Component: Ingredient },
+  { path: ROUTES.FEED_WITH_ID, Component: Order },
+  {
+    path: ROUTES.ORDERS_WITH_ID,
+    Component: Order,
+    status: ROUTE_STATUSES.PROTECTED,
+  },
 ];
 
 const App = () => {
-  const { isRedirectedFromMain } = useSelector((state) => state.modalWindows);
+  const { isRedirectedFromMain, isRedirectedFromFeed } = useSelector(
+    (state) => state.modalWindows
+  );
 
   return (
     <div className={styles.app}>
       <AppHeader />
-      <main className={classnames(styles.main, 'pr-4', 'pl-4')}>
+      <main className={classnames(styles.main, "pr-4", "pl-4")}>
         <Switch>
           {isRedirectedFromMain && (
             <Route path={ROUTES.INGREDIENTS_WITH_ID} component={Main} exact />
+          )}
+          {isRedirectedFromFeed && (
+            <Route path={ROUTES.FEED_WITH_ID} component={Feed} exact />
           )}
 
           {routesAndComponents.map(({ path, Component, status, ...props }) => {
@@ -86,6 +108,7 @@ const App = () => {
 
       <OrderDetailsModal />
       <IngredientDetailsModal />
+      <FeedInfoModal />
     </div>
   );
 };
