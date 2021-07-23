@@ -15,7 +15,7 @@ const OrderDetailsModal = () => {
 
   return (
     <Modal onClose={() => dispatch(handleCloseOrderDetailsModal())}>
-      <OrderDetails orderNumber={orderNumber} />
+        <OrderDetails orderNumber={orderNumber} />
     </Modal>
   );
 };

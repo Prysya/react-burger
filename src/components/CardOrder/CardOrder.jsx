@@ -11,7 +11,7 @@ import {
   handleOrderSelection,
 } from "../../services/slices";
 import { ROUTES } from "../../constants";
-import { useHistory } from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 const MemoCurrencyIcon = memo(CurrencyIcon);
 
@@ -27,6 +27,8 @@ const CardOrder = ({
   fromProfile = false,
 }) => {
   const dispatch = useDispatch();
+  
+  const location = useLocation();
 
   const history = useHistory();
 
@@ -46,10 +48,10 @@ const CardOrder = ({
     );
     dispatch(handleOpenFeedInfoModal());
 
-    history.replace({
+    history.push({
       pathname: `${fromProfile ? ROUTES.ORDERS : ROUTES.FEED}/${_id}`,
       state: {
-        from: fromProfile ? ROUTES.ORDERS : ROUTES.FEED
+        background: location
       }
     });
     //eslint-disable-next-line

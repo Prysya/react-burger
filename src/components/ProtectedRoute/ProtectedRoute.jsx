@@ -20,11 +20,14 @@ const ProtectedRoute = ({ children, ...props }) => {
       dispatch(handleGetUserData())
         .then(unwrapResult)
         .catch(() => {})
-        .finally(() => setUserLoaded(true))
-      ;
+        .finally(() => setUserLoaded(true));
     } else {
       setUserLoaded(true);
     }
+
+    return () => {
+      setUserLoaded(false);
+    };
     //eslint-disable-next-line
   }, []);
 

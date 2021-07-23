@@ -1,27 +1,25 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import React, {useEffect} from "react";
+import {Route, Switch, useHistory, useLocation} from "react-router-dom";
 
 import styles from "./App.module.css";
 
-import { ROUTE_STATUSES, ROUTES } from "../../constants";
+import {ROUTE_STATUSES, ROUTES} from "../../constants";
 import {
   Error404,
-  Main,
-  Register,
-  Login,
-  ForgotPassword,
-  ResetPassword,
-  Profile,
-  Logout,
-  Ingredient,
-  Order,
   Feed,
+  ForgotPassword,
+  Ingredient,
+  Login,
+  Logout,
+  Main,
+  Order,
+  Profile,
+  Register,
+  ResetPassword,
 } from "../../pages";
-import { AppHeader, OrderDetailsModal, IngredientDetailsModal } from "../";
-import { checkRouteStatusAndReturnSelectedRoute } from "../../utils";
+import {AppHeader, IngredientDetailsModal, FeedInfoModal, OrderDetailsModal} from "../";
+import {checkRouteStatusAndReturnSelectedRoute} from "../../utils";
 import classnames from "classnames";
-import FeedInfoModal from "../FeedInfoModal/FeedInfoModal";
 
 const routesAndComponents = [
   { path: ROUTES.MAIN, Component: Main, exact: true },
@@ -56,13 +54,13 @@ const routesAndComponents = [
     path: ROUTES.PROFILE,
     Component: Profile,
     status: ROUTE_STATUSES.PROTECTED,
-    exact: true
+    exact: true,
   },
   {
     path: ROUTES.ORDERS,
     Component: Profile,
     status: ROUTE_STATUSES.PROTECTED,
-    exact: true
+    exact: true,
   },
   { path: ROUTES.LOGOUT, Component: Logout, status: ROUTE_STATUSES.PROTECTED },
   { path: ROUTES.INGREDIENTS_WITH_ID, Component: Ingredient },
@@ -74,23 +72,33 @@ const routesAndComponents = [
   },
 ];
 
+const routesAndModals = [
+  { path: ROUTES.FEED_WITH_ID, Component: FeedInfoModal },
+  {
+    path: ROUTES.ORDERS_WITH_ID,
+    Component: FeedInfoModal,
+    status: ROUTE_STATUSES.PROTECTED,
+  },
+  { path: ROUTES.INGREDIENTS_WITH_ID, Component: IngredientDetailsModal },
+];
+
 const App = () => {
-  const { isRedirectedFromMain, isRedirectedFromFeed } = useSelector(
-    (state) => state.modalWindows
-  );
+  const history = useHistory();
+
+  useEffect(() => {
+    history.replace({});
+    //eslint-disable-next-line
+  }, []);
+
+  let location = useLocation();
+
+  let background = location?.state?.background;
 
   return (
     <div className={styles.app}>
       <AppHeader />
       <main className={classnames(styles.main, "pr-4", "pl-4")}>
-        <Switch>
-          {isRedirectedFromMain && (
-            <Route path={ROUTES.INGREDIENTS_WITH_ID} component={Main} exact />
-          )}
-          {isRedirectedFromFeed && (
-            <Route path={ROUTES.FEED_WITH_ID} component={Feed} exact />
-          )}
-
+        <Switch location={background || location}>
           {routesAndComponents.map(({ path, Component, status, ...props }) => {
             const SelectedRoute =
               checkRouteStatusAndReturnSelectedRoute(status);
@@ -105,10 +113,18 @@ const App = () => {
           <Route path="*" component={Error404} />
         </Switch>
       </main>
-
+  
       <OrderDetailsModal />
-      <IngredientDetailsModal />
-      <FeedInfoModal />
+      {background &&
+        routesAndModals.map(({ path, Component, status, ...props }) => {
+          const SelectedRoute = checkRouteStatusAndReturnSelectedRoute(status);
+
+          return (
+            <SelectedRoute path={path} key={path} {...props}>
+              <Component />
+            </SelectedRoute>
+          );
+        })}
     </div>
   );
 };

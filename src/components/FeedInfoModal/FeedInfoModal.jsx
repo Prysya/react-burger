@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {useHistory, useLocation} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
 import { handleCloseFeedInfoModal } from "../../services/slices";
-import { ROUTES } from "../../constants";
 import { Modal } from "../Modal";
 import { FeedInfo } from "../FeedInfo";
 
@@ -10,8 +10,6 @@ const FeedInfoModal = () => {
   const dispatch = useDispatch();
 
   const history = useHistory();
-  
-  const location = useLocation();
 
   const {
     orders: { selectedOrder },
@@ -25,8 +23,7 @@ const FeedInfoModal = () => {
 
   const handleClose = () => {
     dispatch(handleCloseFeedInfoModal());
-    history.replace({ pathname: location.state?.from || ROUTES.FEED });
-    delete location.state.from
+    history.goBack();
   };
 
   return (
