@@ -5,6 +5,10 @@ import { handleOpenOrderDetailsModal } from "./handleOpenOrderDetailsModal";
 
 const initialState = {
   isIngredientDetailsModalIsOpen: false,
+  
+  isFeedInfoModalIsOpen: false,
+  isRedirectedFromFeed: false,
+  
   isOrderDetailsModalIsOpen: false,
   isOrderButtonDisabled: false,
 
@@ -34,6 +38,14 @@ const modalWindowsSlice = createSlice({
     handleWaitingOrderNumber: (state) => {
       state.orderNumberWaitAuth = true;
     },
+    handleOpenFeedInfoModal: (state) => {
+      state.isFeedInfoModalIsOpen = true;
+      state.isRedirectedFromFeed = true;
+    },
+    handleCloseFeedInfoModal: (state) => {
+      state.isFeedInfoModalIsOpen = false;
+      state.isRedirectedFromFeed = false;
+    }
   },
   extraReducers: {
     [handleOpenOrderDetailsModal.pending]: (state) => {
@@ -71,5 +83,7 @@ export const {
   handleCloseIngredientDetailsModal,
   handleCloseOrderDetailsModal,
   handleWaitingOrderNumber,
+  handleOpenFeedInfoModal,
+  handleCloseFeedInfoModal
 } = modalWindowsSlice.actions;
 export default modalWindowsSlice.reducer;

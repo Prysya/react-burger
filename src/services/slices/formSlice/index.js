@@ -50,8 +50,16 @@ const formSlice = createSlice({
       builder.addCase(thunk.rejected, (state, action) => {
         if (state.formLoading === LOAD_STATUSES.PENDING) {
           state.formLoading = LOAD_STATUSES.IDLE;
-          state.formPendingError = action?.error || null;
-          state.formErrorMessage = MESSAGES.ERRORS.RES_ERROR;
+          if (action.payload?.message) {
+            state.formPendingError = action.payload.message;
+          } else {
+            state.formPendingError = action?.error;
+          }
+
+          state.formErrorMessage =
+            state.formPendingError === "email or password are incorrect"
+              ? MESSAGES.ERRORS.DATA_IS_INCORRECT
+              : MESSAGES.ERRORS.RES_ERROR;
         }
       });
     }

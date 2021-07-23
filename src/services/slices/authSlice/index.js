@@ -1,4 +1,9 @@
-import { createSlice, isFulfilled, isRejected, isPending } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  isFulfilled,
+  isRejected,
+  isPending,
+} from "@reduxjs/toolkit";
 
 import { deleteTokens, setTokens } from "../../../utils";
 
@@ -10,7 +15,7 @@ import { handleUpdateUserData } from "./handleUpdateUserData";
 
 const initialState = {
   tokenResponseStatus: LOAD_STATUSES.IDLE,
-  
+
   accessTokenResponseStatus: LOAD_STATUSES.IDLE,
   refreshTokenResponseStatus: LOAD_STATUSES.IDLE,
 
@@ -44,7 +49,9 @@ const authSlice = createSlice({
       }
     },
     handleDeleteTokensAndLogout: (state) => {
-      Object.entries(initialState).forEach(([name, value]) => state[name] = value);
+      Object.entries(initialState).forEach(
+        ([name, value]) => (state[name] = value)
+      );
 
       deleteTokens();
     },
@@ -93,42 +100,42 @@ const authSlice = createSlice({
         setTokens(action);
       }
     });
-  
-    for(const thunk of [handleUpdateToken, handleLogout]) {
+
+    for (const thunk of [handleUpdateToken, handleLogout]) {
       builder.addMatcher(isPending(thunk), (state) => {
-        state.refreshTokenResponseStatus = LOAD_STATUSES.PENDING
+        state.refreshTokenResponseStatus = LOAD_STATUSES.PENDING;
       });
     }
-    
+
     builder.addMatcher(isPending(handleGetUserData), (state) => {
-      state.accessTokenResponseStatus = LOAD_STATUSES.PENDING
+      state.accessTokenResponseStatus = LOAD_STATUSES.PENDING;
     });
-    
+
     builder.addMatcher(isRejected(handleUpdateToken), (state) => {
-      state.refreshTokenResponseStatus = LOAD_STATUSES.IDLE
+      state.refreshTokenResponseStatus = LOAD_STATUSES.IDLE;
       authSlice.caseReducers.handleDeleteTokensAndLogout(state);
     });
-    
+
     builder.addMatcher(isRejected(handleLogout), (state) => {
-      state.refreshTokenResponseStatus = LOAD_STATUSES.IDLE
+      state.refreshTokenResponseStatus = LOAD_STATUSES.IDLE;
     });
-    
+
     builder.addMatcher(isRejected(handleGetUserData), (state) => {
-      state.isAuthenticated = false
-      state.accessTokenResponseStatus = LOAD_STATUSES.IDLE
+      state.isAuthenticated = false;
+      state.accessTokenResponseStatus = LOAD_STATUSES.IDLE;
     });
-  
+
     builder.addMatcher(isFulfilled(handleUpdateToken), (state) => {
-      state.refreshTokenResponseStatus = LOAD_STATUSES.IDLE
+      state.refreshTokenResponseStatus = LOAD_STATUSES.IDLE;
     });
-  
+
     builder.addMatcher(isFulfilled(handleGetUserData), (state) => {
-      state.accessTokenResponseStatus = LOAD_STATUSES.IDLE
+      state.accessTokenResponseStatus = LOAD_STATUSES.IDLE;
     });
 
     builder.addMatcher(isFulfilled(handleLogout), (state) => {
-      state.refreshTokenResponseStatus = LOAD_STATUSES.IDLE
-        authSlice.caseReducers.handleDeleteTokensAndLogout(state);
+      state.refreshTokenResponseStatus = LOAD_STATUSES.IDLE;
+      authSlice.caseReducers.handleDeleteTokensAndLogout(state);
     });
 
     for (const thunk of [handleUpdateUserData, handleGetUserData]) {
@@ -145,5 +152,9 @@ export {
   handleGetUserData,
   handleUpdateUserData,
 };
-export const { setUserData, getSuccessForPasswordReset } = authSlice.actions;
+export const {
+  setUserData,
+  getSuccessForPasswordReset,
+  handleDeleteTokensAndLogout,
+} = authSlice.actions;
 export default authSlice.reducer;
