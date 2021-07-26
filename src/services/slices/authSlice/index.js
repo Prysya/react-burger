@@ -13,7 +13,7 @@ import { handleLogout } from "./handleLogout";
 import { handleGetUserData } from "./handleGetUserData";
 import { handleUpdateUserData } from "./handleUpdateUserData";
 
-const initialState = {
+export const initialAuthState = {
   tokenResponseStatus: LOAD_STATUSES.IDLE,
 
   accessTokenResponseStatus: LOAD_STATUSES.IDLE,
@@ -31,7 +31,7 @@ const initialState = {
 
 const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: initialAuthState,
   reducers: {
     setUserData: (state, action) => {
       if (
@@ -49,8 +49,8 @@ const authSlice = createSlice({
       }
     },
     handleDeleteTokensAndLogout: (state) => {
-      Object.entries(initialState).forEach(
-        ([name, value]) => (state[name] = value)
+      Object.entries(initialAuthState).forEach(
+        ([name, value]) => name !== "isPasswordForgotten" && (state[name] = value)
       );
 
       deleteTokens();
@@ -74,6 +74,7 @@ const authSlice = createSlice({
       builder.addCase(thunk.fulfilled, (state) => {
         if (state.tokenResponseStatus === LOAD_STATUSES.PENDING) {
           state.tokenResponseStatus = LOAD_STATUSES.IDLE;
+          state.isPasswordForgotten = false;
         }
       });
       builder.addCase(thunk.rejected, (state, action) => {

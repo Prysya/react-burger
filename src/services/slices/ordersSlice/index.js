@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { socketMiddleware } from "./socketMiddleware";
 
-const initialState = {
+export const initialOrdersState = {
   orders: [],
   currentUserOrders: [],
   selectedOrder: {},
@@ -17,10 +17,15 @@ const initialState = {
 
 const ordersSlice = createSlice({
   name: "orders",
-  initialState,
+  initialState: initialOrdersState,
   reducers: {
     handleOrderSelection: (state, action) => {
-      state.selectedOrder = action.payload;
+      if (
+        action.payload === Object(action.payload) &&
+        !Array.isArray(action.payload)
+      ) {
+        state.selectedOrder = action.payload;
+      }
     },
 
     wsConnectionStart: () => {},
@@ -51,7 +56,7 @@ const ordersSlice = createSlice({
           ? action.payload.totalToday
           : 0;
     },
-  
+
     wsAuthConnectionStart: () => {},
     wsAuthSendMessage: () => {},
     wsAuthConnectionSuccess: (state) => {
@@ -89,7 +94,7 @@ export const {
   wsAuthConnectionError,
   wsAuthConnectionSuccess,
   wsAuthConnectionStart,
-  wsAuthSendMessage
+  wsAuthSendMessage,
 } = ordersSlice.actions;
 
 export const wsActions = {
