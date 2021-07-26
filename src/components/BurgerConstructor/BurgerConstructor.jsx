@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import classnames from "classnames";
 import classNames from "classnames";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useHistory } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from "./BurgerConstructor.module.css";
 
@@ -25,8 +28,7 @@ import {
 } from "../../services/slices";
 
 import { ITEM_TYPES, LOAD_STATUSES, ROUTES } from "../../constants";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { useHistory } from "react-router-dom";
+
 
 const MemoCurrencyIcon = memo(CurrencyIcon);
 const MemoButton = memo(Button);
@@ -72,7 +74,7 @@ const BurgerConstructor = () => {
     drop: (item) => {
       return item.type === "bun"
         ? dispatch(handleBunSelection(item))
-        : dispatch(handleItemAddition(item));
+        : dispatch(handleItemAddition({...item, randomId: uuidv4()}));
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -92,7 +94,10 @@ const BurgerConstructor = () => {
           .catch(() => {});
       })
       .catch(() => {
-        history.replace({ pathname: ROUTES.LOGIN });
+        history.replace({
+          pathname: ROUTES.LOGIN,
+          state: { from: ROUTES.MAIN },
+        });
       });
 
     //eslint-disable-next-line
