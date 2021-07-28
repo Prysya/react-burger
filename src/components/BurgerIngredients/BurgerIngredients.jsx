@@ -3,6 +3,7 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { scroller } from "react-scroll";
 import { useHistory, useLocation } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from "./BurgerIngredients.module.css";
 
@@ -50,7 +51,7 @@ const BurgerIngredients = () => {
     if (item.type === "bun") {
       dispatch(handleBunSelection(item));
     } else {
-      dispatch(handleItemAddition(item));
+      dispatch(handleItemAddition({...item, randomId: uuidv4()}));
     }
 
     dispatch(setCurrentIngredient(item));

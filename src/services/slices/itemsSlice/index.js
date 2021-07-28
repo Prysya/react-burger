@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+export const initialItemsState = {
   fullPrice: 0,
   selectedBun: {},
   selectedItems: [],
@@ -10,7 +10,7 @@ const initialState = {
 
 const itemsSlice = createSlice({
   name: "items",
-  initialState,
+  initialState: initialItemsState,
   reducers: {
     handleBunSelection: (state, action) => {
       state.selectedBun = action.payload;
@@ -23,14 +23,14 @@ const itemsSlice = createSlice({
           (state.selectedItemsCount[action.payload.name] || 0) + 1,
       };
 
-      state.selectedItems.push({ ...action.payload, randomId: Math.random().toString(36).substring(2, 15) });
+      state.selectedItems.push(action.payload);
     },
     setCurrentIngredient: (state, action) => {
       state.currentIngredient = action.payload;
     },
     calculateFullPrice: (state) => {
       const selectedBun = state.selectedBun?.price || 0;
-      
+
       state.fullPrice =
         state.selectedItems.reduce((acc, item) => acc + item.price, 0) +
         selectedBun * 2;
@@ -51,20 +51,22 @@ const itemsSlice = createSlice({
       state.selectedBun = {};
     },
     handleItemMove: (state, action) => {
-      const dragItem = state.selectedItems[action.payload.dragIndex];
+      if (action.payload?.dragIndex) {
+        const dragItem = state.selectedItems[action.payload.dragIndex];
 
-      if (dragItem) {
-        const newSelectedItemsArr = [...state.selectedItems];
+        if (dragItem) {
+          const newSelectedItemsArr = [...state.selectedItems];
 
-        const prevItem = newSelectedItemsArr.splice(
-          action.payload.hoverIndex,
-          1,
-          dragItem
-        );
+          const prevItem = newSelectedItemsArr.splice(
+            action.payload.hoverIndex,
+            1,
+            dragItem
+          );
 
-        newSelectedItemsArr.splice(action.payload.dragIndex, 1, prevItem[0]);
+          newSelectedItemsArr.splice(action.payload.dragIndex, 1, prevItem[0]);
 
-        state.selectedItems = newSelectedItemsArr;
+          state.selectedItems = newSelectedItemsArr;
+        }
       }
     },
   },

@@ -5,7 +5,7 @@ import { handleResetPasswordFormSubmit } from "./handleResetPasswordFormSubmit";
 import { handleRegisterFormSubmit } from "./handleRegisterFormSubmit";
 import { handleLoginFormSubmit } from "./handleLoginFormSubmit";
 
-const initialState = {
+export const initialFormState = {
   formLoading: LOAD_STATUSES.IDLE,
   formPendingError: null,
   formErrorMessage: null,
@@ -15,7 +15,7 @@ const initialState = {
 
 const formSlice = createSlice({
   name: "form",
-  initialState,
+  initialState: initialFormState,
   reducers: {
     resetToDefault: (state) => {
       state.formLoading = LOAD_STATUSES.IDLE;
@@ -38,7 +38,7 @@ const formSlice = createSlice({
           state.formPendingError = null;
           state.formPendingSuccess = null;
           state.formErrorMessage = null;
-          state.formSuccessMessage = null;
+          state.formPendingSuccessMessage = null;
         }
       });
       builder.addCase(thunk.fulfilled, (state, action) => {
