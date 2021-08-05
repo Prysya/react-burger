@@ -1,0 +1,16 @@
+export enum Routes {
+  Main = "/",
+  Login = "/login",
+  Register = "/register",
+  ForgotPassword = "/forgot-password",
+  ResetPassword = "/reset-password",
+  ResetPasswordWithToken = "/reset-password/:token",
+  Feed = "/feed",
+  FeedWithId = "/feed/:feedId",
+  Profile = "/profile",
+  Orders = "/profile/orders",
+  OrdersWithId = "/profile/orders/:feedId",
+  Ingredients = "/ingredients",
+  IngredientsWithId = "/ingredients/:ingredientId",
+  Logout = "/logout",
+}
