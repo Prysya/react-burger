@@ -39,7 +39,7 @@ const itemsSlice = createSlice({
     ) => {
       state.currentIngredient = action.payload;
     },
-    calculateFullPrice: (state: IInitialItemsState) => {
+    calculateFullPrice: (state) => {
       let selectedBun: number = 0;
 
       if (state.selectedBun && "price" in state.selectedBun) {
@@ -69,7 +69,7 @@ const itemsSlice = createSlice({
         };
       }
     },
-    deleteAllIngredients: (state: IInitialItemsState) => {
+    deleteAllIngredients: (state) => {
       state.selectedItems = [];
       state.selectedItemsCount = null;
       state.selectedBun = null;

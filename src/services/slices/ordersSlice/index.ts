@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { socketMiddleware } from "./socketMiddleware";
 import {
-  ICloseReason, ICurrentOrder,
+  ICloseReason,
+  ICurrentOrder,
   IInitialOrderState,
   IWsActions,
   IWsMessage,
@@ -25,10 +26,7 @@ const ordersSlice = createSlice({
   name: "orders",
   initialState: initialOrdersState,
   reducers: {
-    handleOrderSelection: (
-      state: IInitialOrderState,
-      action: PayloadAction<ICurrentOrder>
-    ) => {
+    handleOrderSelection: (state, action: PayloadAction<ICurrentOrder>) => {
       if (
         action.payload === Object(action.payload) &&
         !Array.isArray(action.payload)
@@ -39,29 +37,20 @@ const ordersSlice = createSlice({
 
     wsConnectionStart: () => {},
     wsSendMessage: () => {},
-    wsConnectionSuccess: (state: IInitialOrderState) => {
+    wsConnectionSuccess: (state) => {
       state.wsError = null;
       state.wsClose = null;
       state.wsConnected = true;
     },
-    wsConnectionError: (
-      state: IInitialOrderState,
-      action: PayloadAction<string>
-    ) => {
+    wsConnectionError: (state, action: PayloadAction<string>) => {
       state.wsConnected = false;
       state.wsError = action.payload;
     },
-    wsConnectionClosed: (
-      state: IInitialOrderState,
-      action: PayloadAction<ICloseReason>
-    ) => {
+    wsConnectionClosed: (state, action: PayloadAction<ICloseReason>) => {
       state.wsConnected = false;
       state.wsClose = action.payload;
     },
-    wsGetMessage: (
-      state: IInitialOrderState,
-      action: PayloadAction<IWsMessage>
-    ) => {
+    wsGetMessage: (state, action: PayloadAction<IWsMessage>) => {
       if (action.payload?.orders && Array.isArray(action.payload.orders)) {
         state.orders = action.payload?.orders;
       }
@@ -77,29 +66,20 @@ const ordersSlice = createSlice({
 
     wsAuthConnectionStart: () => {},
     wsAuthSendMessage: () => {},
-    wsAuthConnectionSuccess: (state: IInitialOrderState) => {
+    wsAuthConnectionSuccess: (state) => {
       state.wsError = null;
       state.wsClose = null;
       state.wsAuthConnected = true;
     },
-    wsAuthConnectionError: (
-      state: IInitialOrderState,
-      action: PayloadAction<string>
-    ) => {
+    wsAuthConnectionError: (state, action: PayloadAction<string>) => {
       state.wsAuthConnected = false;
       state.wsError = action.payload;
     },
-    wsAuthConnectionClosed: (
-      state: IInitialOrderState,
-      action: PayloadAction<ICloseReason>
-    ) => {
+    wsAuthConnectionClosed: (state, action: PayloadAction<ICloseReason>) => {
       state.wsAuthConnected = false;
       state.wsClose = action.payload;
     },
-    wsAuthGetMessage: (
-      state: IInitialOrderState,
-      action: PayloadAction<IWsMessage>
-    ) => {
+    wsAuthGetMessage: (state, action: PayloadAction<IWsMessage>) => {
       if (Array.isArray(action.payload?.orders)) {
         state.currentUserOrders = action.payload.orders;
       }

@@ -21,29 +21,29 @@ const modalWindowsSlice = createSlice({
   name: "modalWindows",
   initialState: initialModalsState,
   reducers: {
-    handleOpenIngredientDetailsModal: (state: IInitialModalWindowsState) => {
+    handleOpenIngredientDetailsModal: (state) => {
       state.isIngredientDetailsModalIsOpen = true;
     },
-    handleCloseIngredientDetailsModal: (state: IInitialModalWindowsState) => {
+    handleCloseIngredientDetailsModal: (state) => {
       state.isIngredientDetailsModalIsOpen = false;
     },
-    handleCloseOrderDetailsModal: (state: IInitialModalWindowsState) => {
+    handleCloseOrderDetailsModal: (state) => {
       state.isOrderDetailsModalIsOpen = false;
     },
-    handleWaitingOrderNumber: (state: IInitialModalWindowsState) => {
+    handleWaitingOrderNumber: (state) => {
       state.orderNumberWaitAuth = true;
     },
-    handleOpenFeedInfoModal: (state: IInitialModalWindowsState) => {
+    handleOpenFeedInfoModal: (state) => {
       state.isFeedInfoModalIsOpen = true;
     },
-    handleCloseFeedInfoModal: (state: IInitialModalWindowsState) => {
+    handleCloseFeedInfoModal: (state) => {
       state.isFeedInfoModalIsOpen = false;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(
       handleOpenOrderDetailsModal.pending,
-      (state: IInitialModalWindowsState) => {
+      (state) => {
         if (state.orderNumberLoading === LoadStatuses.Idle) {
           state.orderNumberLoading = LoadStatuses.Pending;
           state.isOrderButtonDisabled = true;
@@ -56,7 +56,7 @@ const modalWindowsSlice = createSlice({
 
     builder.addCase(
       handleOpenOrderDetailsModal.fulfilled,
-      (state: IInitialModalWindowsState, action) => {
+      (state, action) => {
         if (state.orderNumberLoading === LoadStatuses.Pending) {
           state.orderNumberLoading = LoadStatuses.Idle;
           state.orderNumber = action.payload;
@@ -69,7 +69,7 @@ const modalWindowsSlice = createSlice({
 
     builder.addCase(
       handleOpenOrderDetailsModal.rejected,
-      (state: IInitialModalWindowsState, action) => {
+      (state, action) => {
         if (state.orderNumberLoading === LoadStatuses.Pending) {
           state.orderNumberLoading = LoadStatuses.Idle;
           state.orderNumberError = action.error;

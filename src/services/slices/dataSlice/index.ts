@@ -17,7 +17,7 @@ const dataSlice = createSlice({
   initialState: initialDataState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getDataFromApi.pending, (state: IInitialDataState) => {
+    builder.addCase(getDataFromApi.pending, (state) => {
       if (state.dataLoading === LoadStatuses.Idle) {
         state.dataLoading = LoadStatuses.Pending;
         state.dataError = null;
@@ -26,7 +26,7 @@ const dataSlice = createSlice({
 
     builder.addCase(
       getDataFromApi.fulfilled,
-      (state: IInitialDataState, action: PayloadAction<Ingredient[]>) => {
+      (state, action: PayloadAction<Ingredient[]>) => {
         if (state.dataLoading === LoadStatuses.Pending) {
           state.dataLoading = LoadStatuses.Idle;
           if (Array.isArray(action.payload) && action.payload.length > 0) {
@@ -49,7 +49,7 @@ const dataSlice = createSlice({
     );
     builder.addCase(
       getDataFromApi.rejected,
-      (state: IInitialDataState, action) => {
+      (state, action) => {
         if (state.dataLoading === LoadStatuses.Pending) {
           state.dataLoading = LoadStatuses.Idle;
           state.dataError = action.error;

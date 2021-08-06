@@ -18,7 +18,7 @@ const formSlice = createSlice({
   name: "form",
   initialState: initialFormState,
   reducers: {
-    resetToDefault: (state: IInitialFormState) => {
+    resetToDefault: (state) => {
       state.formLoading = LoadStatuses.Idle;
       state.formPendingError = null;
       state.formErrorMessage = null;
@@ -33,7 +33,7 @@ const formSlice = createSlice({
       handleRegisterFormSubmit,
       handleLoginFormSubmit,
     ]) {
-      builder.addCase(thunk.pending, (state: IInitialFormState) => {
+      builder.addCase(thunk.pending, (state) => {
         if (state.formLoading === LoadStatuses.Idle) {
           state.formLoading = LoadStatuses.Pending;
           state.formPendingError = null;
@@ -42,13 +42,13 @@ const formSlice = createSlice({
           state.formPendingSuccessMessage = null;
         }
       });
-      builder.addCase(thunk.fulfilled, (state: IInitialFormState, action) => {
+      builder.addCase(thunk.fulfilled, (state, action) => {
         if (state.formLoading === LoadStatuses.Pending) {
           state.formLoading = LoadStatuses.Idle;
           state.formPendingSuccess = action.payload;
         }
       });
-      builder.addCase(thunk.rejected, (state: IInitialFormState, action) => {
+      builder.addCase(thunk.rejected, (state, action) => {
         if (state.formLoading === LoadStatuses.Pending) {
           state.formLoading = LoadStatuses.Idle;
           if (action.payload?.message) {
@@ -67,7 +67,7 @@ const formSlice = createSlice({
 
     builder.addMatcher(
       isFulfilled(handleResetPasswordFormSubmit),
-      (state: IInitialFormState, action) => {
+      (state, action) => {
         if (action.payload?.success) {
           state.formPendingSuccessMessage = SuccessMessages.PasswordSuccess;
         }
@@ -75,7 +75,7 @@ const formSlice = createSlice({
     );
     builder.addMatcher(
       isRejected(handleResetPasswordFormSubmit),
-      (state: IInitialFormState, action) => {
+      (state, action) => {
         if (action.payload?.message === "Incorrect reset token") {
           state.formErrorMessage = ErrorMessages.TokenError;
         }

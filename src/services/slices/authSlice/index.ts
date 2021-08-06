@@ -29,7 +29,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialAuthState,
   reducers: {
-    setUserData: (state:IInitialAuthState, action) => {
+    setUserData: (state, action) => {
       if (
         action.payload?.success &&
         action.payload?.user?.name &&
@@ -51,7 +51,7 @@ const authSlice = createSlice({
 
       deleteTokens();
     },
-    getSuccessForPasswordReset: (state:IInitialAuthState) => {
+    getSuccessForPasswordReset: (state) => {
       state.isPasswordForgotten = true;
     },
   },
@@ -62,18 +62,18 @@ const authSlice = createSlice({
       handleGetUserData,
       handleUpdateUserData,
     ]) {
-      builder.addCase(thunk.pending, (state: IInitialAuthState) => {
+      builder.addCase(thunk.pending, (state) => {
         if (state.tokenResponseStatus === LoadStatuses.Idle) {
           state.tokenResponseStatus = LoadStatuses.Pending;
         }
       });
-      builder.addCase(thunk.fulfilled, (state: IInitialAuthState) => {
+      builder.addCase(thunk.fulfilled, (state) => {
         if (state.tokenResponseStatus === LoadStatuses.Pending) {
           state.tokenResponseStatus = LoadStatuses.Idle;
           state.isPasswordForgotten = false;
         }
       });
-      builder.addCase(thunk.rejected, (state: IInitialAuthState, action) => {
+      builder.addCase(thunk.rejected, (state, action) => {
         if (state.tokenResponseStatus === LoadStatuses.Pending) {
           state.tokenResponseStatus = LoadStatuses.Idle;
 
@@ -86,7 +86,7 @@ const authSlice = createSlice({
       });
     }
 
-    builder.addMatcher(isFulfilled(handleUpdateToken), (state: IInitialAuthState, action) => {
+    builder.addMatcher(isFulfilled(handleUpdateToken), (state, action) => {
       if (
         action.payload?.success &&
         action.payload?.accessToken &&
@@ -99,44 +99,44 @@ const authSlice = createSlice({
     });
 
     for (const thunk of [handleUpdateToken, handleLogout]) {
-      builder.addMatcher(isPending(thunk), (state: IInitialAuthState) => {
+      builder.addMatcher(isPending(thunk), (state) => {
         state.refreshTokenResponseStatus = LoadStatuses.Pending;
       });
     }
 
-    builder.addMatcher(isPending(handleGetUserData), (state: IInitialAuthState) => {
+    builder.addMatcher(isPending(handleGetUserData), (state) => {
       state.accessTokenResponseStatus = LoadStatuses.Pending;
     });
 
-    builder.addMatcher(isRejected(handleUpdateToken), (state: IInitialAuthState) => {
+    builder.addMatcher(isRejected(handleUpdateToken), (state) => {
       state.refreshTokenResponseStatus = LoadStatuses.Idle;
       authSlice.caseReducers.handleDeleteTokensAndLogout(state);
     });
 
-    builder.addMatcher(isRejected(handleLogout), (state: IInitialAuthState) => {
+    builder.addMatcher(isRejected(handleLogout), (state) => {
       state.refreshTokenResponseStatus = LoadStatuses.Idle;
     });
 
-    builder.addMatcher(isRejected(handleGetUserData), (state: IInitialAuthState) => {
+    builder.addMatcher(isRejected(handleGetUserData), (state) => {
       state.isAuthenticated = false;
       state.accessTokenResponseStatus = LoadStatuses.Idle;
     });
 
-    builder.addMatcher(isFulfilled(handleUpdateToken), (state: IInitialAuthState) => {
+    builder.addMatcher(isFulfilled(handleUpdateToken), (state) => {
       state.refreshTokenResponseStatus = LoadStatuses.Idle;
     });
 
-    builder.addMatcher(isFulfilled(handleGetUserData), (state: IInitialAuthState) => {
+    builder.addMatcher(isFulfilled(handleGetUserData), (state) => {
       state.accessTokenResponseStatus = LoadStatuses.Idle;
     });
 
-    builder.addMatcher(isFulfilled(handleLogout), (state: IInitialAuthState) => {
+    builder.addMatcher(isFulfilled(handleLogout), (state) => {
       state.refreshTokenResponseStatus = LoadStatuses.Idle;
       authSlice.caseReducers.handleDeleteTokensAndLogout(state);
     });
 
     for (const thunk of [handleUpdateUserData, handleGetUserData]) {
-      builder.addMatcher(isFulfilled(thunk), (state: IInitialAuthState, action) => {
+      builder.addMatcher(isFulfilled(thunk), (state, action) => {
         authSlice.caseReducers.setUserData(state, action);
       });
     }
