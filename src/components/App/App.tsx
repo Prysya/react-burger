@@ -96,9 +96,9 @@ const App: React.FC = () => {
     //eslint-disable-next-line
   }, []);
 
-  let location = useLocation<ILocation>();
+  const location = useLocation<ILocation>();
 
-  let background = location?.state?.background;
+  const background = location?.state?.background;
 
   return (
     <div className={styles.app}>
