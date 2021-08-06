@@ -16,9 +16,9 @@ export const parseIngredients = (
   return [...new Set(ingredientsArray)]?.map((item) => ({
     count:
       dataObjectVariant?.[item]?.type === "bun" ? 2 : ingredientsCount[item],
-    image: dataObjectVariant?.[item].image,
+    image: dataObjectVariant?.[item]?.image || "",
     id: uuidv4(),
-    itemPrice: dataObjectVariant?.[item].price,
-    name: dataObjectVariant?.[item].name,
+    itemPrice: dataObjectVariant?.[item]?.price || 0,
+    name: dataObjectVariant?.[item]?.name || "",
   }));
 };
