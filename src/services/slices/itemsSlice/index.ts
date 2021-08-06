@@ -15,14 +15,14 @@ const itemsSlice = createSlice({
   initialState: initialItemsState,
   reducers: {
     handleBunSelection: (
-      state: IInitialItemsState,
+      state,
       action: PayloadAction<Ingredient>
     ) => {
       state.selectedBun = action.payload;
     },
 
     handleItemAddition: (
-      state: IInitialItemsState,
+      state,
       action: PayloadAction<Ingredient>
     ) => {
       state.selectedItemsCount = {
@@ -34,7 +34,7 @@ const itemsSlice = createSlice({
       state.selectedItems.push(action.payload);
     },
     setCurrentIngredient: (
-      state: IInitialItemsState,
+      state,
       action: PayloadAction<Ingredient>
     ) => {
       state.currentIngredient = action.payload;
@@ -51,7 +51,7 @@ const itemsSlice = createSlice({
         selectedBun * 2;
     },
     deleteIngredient: (
-      state: IInitialItemsState,
+      state,
       action: PayloadAction<{ index: number; name: string }>
     ) => {
       state.selectedItems = [...state.selectedItems].filter(
@@ -75,10 +75,10 @@ const itemsSlice = createSlice({
       state.selectedBun = null;
     },
     handleItemMove: (
-      state: IInitialItemsState,
+      state,
       action: PayloadAction<{ dragIndex: number; hoverIndex: number }>
     ) => {
-      if (action.payload?.dragIndex) {
+      if (action.payload?.dragIndex >= 0) {
         const dragItem = state.selectedItems[action.payload.dragIndex];
 
         if (dragItem) {

@@ -48,10 +48,10 @@ const BurgerElement: React.FC<IBurgerElement> = ({
       if (!ref.current) {
         return;
       }
-      const dragIndex = item.index;
+      const dragIndex = item.index!;
       const hoverIndex = index;
 
-      if (dragIndex === hoverIndex || !dragIndex || !hoverIndex) {
+      if (dragIndex === hoverIndex ) {
         return;
       }
 
