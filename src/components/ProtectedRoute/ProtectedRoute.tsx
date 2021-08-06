@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import PropTypes from "prop-types";
 
 import { Loader } from "../Loader";
 import { handleGetUserData } from "../../services/slices";
@@ -52,10 +51,6 @@ const ProtectedRoute: React.FC<RouteProps> = ({ children, ...props }) => {
       }
     />
   );
-};
-
-ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default ProtectedRoute;
