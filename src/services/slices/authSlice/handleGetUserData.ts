@@ -33,7 +33,6 @@ export const handleGetUserData = createAsyncThunk<
       ) {
         if (refreshTokenResponseStatus === LoadStatuses.Idle) {
           await dispatch(handleUpdateToken(""));
-          return;
         }
       }
 
