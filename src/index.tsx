@@ -11,7 +11,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename='/react-burger'>
         <DndProvider backend={HTML5Backend}>
           <App />
         </DndProvider>
