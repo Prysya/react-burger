@@ -1,5 +1,5 @@
 .backdrop {
-  z-index: 2;
+  z-index: 10;
   background-color: #000;
   opacity: .6;
   position: fixed;

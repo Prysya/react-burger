@@ -1,0 +1,72 @@
+.container {
+  border-radius: 40px;
+  background-color: var(--background);
+  cursor: pointer;
+  transition: all 200ms linear;
+}
+
+.container:hover {
+  filter: brightness(1.3);
+}
+
+.flexContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flexContainer svg {
+  margin-left: calc(var(--offset-base-size) * 2);
+}
+
+.orderStatusPending {
+  color: var(--colors-interface-success);
+}
+
+.orderStatusError {
+  color: var(--colors-interface-error);
+}
+
+.icon {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: 2px solid #801ab3;
+  margin-left: -14px;
+  background-color: black;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.icon:first-child {
+  margin-left: 0;
+}
+
+.iconWithRemains:last-child {
+  color: white;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.iconWithRemains:last-child:after {
+  content: "";
+  position: absolute;
+  background-color: black;
+  opacity: .6;
+  z-index: 2;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.remainsText {
+  position: relative;
+  z-index: 5;
+}
+
+.iconContainer {
+  display: flex;
+  gap: 1px;
+}

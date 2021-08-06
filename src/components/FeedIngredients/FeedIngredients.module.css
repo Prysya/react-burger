@@ -1,0 +1,16 @@
+.section {
+  width: 100%;
+  max-width: 600px;
+  height: calc(100% - calc(var(--offset-base-size) * 20));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.orders {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--offset-base-size) * 6);
+  height: 100%;
+  padding-right: 12px;
+}
