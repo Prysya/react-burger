@@ -1,3 +1,3 @@
 # Бургерная на краю вселенной
 
-[Сылка на деплой](prysya.github.io/react-burger/)
+[Сылка на деплой](https://prysya.github.io/react-burger/)
